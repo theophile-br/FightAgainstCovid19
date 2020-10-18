@@ -7,15 +7,15 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 ## Table of Content
 
-* [LBP Rules](##lbp-rules)
+* [LBP Rules](#lbp-rules)
 
-* [The Dataset](##the-dataset)
+* [The Dataset](#the-dataset)
 
-* [Install C++ Libs dependency](##install-c++-libs-dependency)
+* [Install C++ Libs dependency](#install-c++-libs-dependency)
 
-* [Compile & Execute](##compile-&-execute)
+* [Compile & Execute](#compile-&-execute)
 
-* [Result](##result)
+* [Result](#result)
 
 ## LBP Rules
 
