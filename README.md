@@ -68,6 +68,11 @@ pkg-config opencv4 --cflags
 ```
 
 ## Compile & Execute
+
+```bash 
+mkdir out #to prepare project out directory
+```
+
 ### With Make
 
 * Compilation Only
