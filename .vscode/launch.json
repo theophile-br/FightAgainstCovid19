@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Debug Train Gray",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/pbl_masked",
+            "args": ["-t", "train", "-m", "gray", "datasets"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "linux": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "/usr/bin/gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "preLaunchTask": "build"
+            },
+        },
+        {
+            "name": "Run Debug Predict Gray",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/pbl_masked",
+            "args": ["-t", "predict", "-m", "gray", "datasets"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "linux": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "/usr/bin/gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "preLaunchTask": "build"
+            },
+        }
+    ]
+}
