@@ -28,7 +28,7 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 More info about LBP [here](https://en.wikipedia.org/wiki/Local_binary_patterns).
 
 ## The Dataset
-Contains Color and GrayScale images in 
+Contains Color and GrayScale images in 102 x 102 pixel.
 Download the dataset [here](https://mega.nz/file/t4QSUBSa#CWXHd4EXMDo0F454wrQ5Bz4drlk4GeXA_sCh2nMtuic) !
 
 Put the datasets on the root directory **./datasets** folder.
