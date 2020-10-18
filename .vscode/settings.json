@@ -52,6 +52,16 @@
 		"system_error": "cpp",
 		"initializer_list": "cpp",
 		"ranges": "cpp",
-		"filesystem": "cpp"
+		"filesystem": "cpp",
+		"chrono": "cpp",
+		"codecvt": "cpp",
+		"condition_variable": "cpp",
+		"list": "cpp",
+		"map": "cpp",
+		"set": "cpp",
+		"ratio": "cpp",
+		"iomanip": "cpp",
+		"mutex": "cpp",
+		"thread": "cpp"
 	}
 }

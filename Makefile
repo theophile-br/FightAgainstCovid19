@@ -7,7 +7,7 @@ prepare:
 	mkdir -p out
 
 build:
-	g++ -g -std=c++17 -Wall src/main.cpp src/train.cpp src/predict.cpp -o out/pbl_masked `pkg-config --cflags --libs opencv4`
+	g++ -g -std=c++17 -Wall src/*.cpp -o out/pbl_masked `pkg-config --cflags --libs opencv4`
 
 gt: all rungraytrain
 
