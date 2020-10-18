@@ -1,3 +1,4 @@
-out
-datasets/*
+out/*
+datasets/COLOR
+datasets/GRAY
 .DS_Store
