@@ -13,10 +13,12 @@
             "externalConsole": false,
             "linux": {
                 "MIMode": "gdb",
-                "miDebuggerPath": "/usr/bin/gdb"
+				"miDebuggerPath": "/usr/bin/gdb",
+				"preLaunchTask": "build"
             },
             "osx": {
-                "MIMode": "lldb"
+				"MIMode": "lldb",
+				"preLaunchTask": "build"
             },
             "windows": {
                 "MIMode": "gdb",
@@ -35,10 +37,12 @@
             "externalConsole": false,
             "linux": {
                 "MIMode": "gdb",
-                "miDebuggerPath": "/usr/bin/gdb"
+				"miDebuggerPath": "/usr/bin/gdb",
+				"preLaunchTask": "build"
             },
             "osx": {
-                "MIMode": "lldb"
+				"MIMode": "lldb",
+				"preLaunchTask": "build"
             },
             "windows": {
                 "MIMode": "gdb",
