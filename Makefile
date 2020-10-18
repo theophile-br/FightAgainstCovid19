@@ -18,7 +18,7 @@ ct: all runcolortrain
 cp: all runcolorpredict
 
 rungraytrain:
-	./out/pbl_masked -t train -m gray datasets 
+	./out/pbl_masked -t train -m gray datasets
 
 rungraypredict:
 	./out/pbl_masked -t predict -m gray datasets

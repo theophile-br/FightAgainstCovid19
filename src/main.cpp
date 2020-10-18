@@ -1,8 +1,10 @@
 #include <iostream>
 #include "predict.h"
 #include "train.h"
+#include <filesystem>
 
 using namespace std;
+using namespace filesystem;
 
 void printUsage(char** argv);
 int parseCmdArgs(int argc, char** argv);
@@ -58,6 +60,11 @@ int parseCmdArgs(int argc, char** argv)
             i++;
         } else {
             path = argv[i];
+			if(!is_directory(path)) {
+				cout << path << " isn't a directory" << endl;
+				printUsage();
+				return EXIT_FAILURE;
+			}
         }
     }
     if(type == string("predict")){
