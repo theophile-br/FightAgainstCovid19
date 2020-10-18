@@ -8,6 +8,13 @@
 using namespace std;
 using namespace cv;
 
+const string LBP::CMFD("CMFD");
+const string LBP::IMFD("IMFD");
+const string LBP::COLOR("COLOR");
+const string LBP::GRAY("GRAY");
+const string LBP::TRAIN("TRAIN");
+const string LBP::TEST("TEST");
+
 vector<int> gray2Hist(Mat img) {
 	vector<uchar> pblImg;
 	vector<int> pblHist(256,0);
@@ -29,8 +36,10 @@ vector<int> gray2Hist(Mat img) {
 			}
 			uchar decimalValue = 0;
 			for (int i = bits.size() -1; i > 0; i--) {
-				decimalValue = decimalValue + bits[i] * (1<<(bits.size()-i-1));
+				//cout << (int)bits[i];
+				decimalValue = decimalValue * 2 + bits[i];
 			}
+			//cout << endl << "data : " << (int)decimalValue << endl;
 			pblImg.push_back(decimalValue);
 			pblHist[decimalValue]++;
 		}
