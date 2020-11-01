@@ -19,7 +19,7 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 ## LBP Rules
 
-**operator :** >
+**operator :** ≥
 
 **direction :** ( 1 to 8 )
 
