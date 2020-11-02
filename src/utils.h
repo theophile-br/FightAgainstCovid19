@@ -17,5 +17,8 @@ class LBP {
 };
 
 std::vector<int> gray2Hist(cv::Mat img);
+std::vector<int> grayDescriptor2Vector(std::string descriptor);
+std::string grayDescriptorGetType(std::string descriptor);
+std::string grayDescriptorGetHistogramPart(std::string descriptor);
 
 #endif

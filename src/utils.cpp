@@ -61,3 +61,34 @@ vector<int> gray2Hist(Mat img)
 	// waitKey(0);
 	return pblHist;
 }
+
+vector<int> grayDescriptor2Vector(string descriptor) {
+	vector<int> v;
+    descriptor = grayDescriptorGetHistogramPart(descriptor);
+	string delimiter = ",";
+
+	size_t pos = 0;
+	string token;
+	while ((pos = descriptor.find(delimiter)) != std::string::npos) {
+    	token = descriptor.substr(0, pos);
+		v.push_back(atoi( token.c_str() ));
+    	descriptor.erase(0, pos + delimiter.length());
+	}
+	return  v;
+}
+
+string grayDescriptorGetType(string descriptor) {
+	string delimiterType= ":";
+	size_t pos = descriptor.find(delimiterType);
+    return descriptor.erase(0, pos + delimiterType.length());
+
+}
+
+string grayDescriptorGetHistogramPart(string descriptor) {
+	string delimiterType= ":";
+	size_t pos = descriptor.find(delimiterType);
+	return descriptor.substr(0, pos);
+}
+
+
+

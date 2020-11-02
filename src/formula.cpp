@@ -2,23 +2,44 @@
 
 using namespace std;
 
-int sad(vector<int> v1, vector<int> v2) {
-    int sumOfDifference = 0;
+double sad(vector<int> v1, vector<int> v2) {
+    double sumOfDifference = 0;
     for(int i = 0; i < v1.size(); i++) {
-        sumOfDifference += abs(v1[i] - v2[i]);
+        sumOfDifference += abs((double)v1[i] - (double)v2[i]);
     }
     return sumOfDifference;
 }
-int intersect(vector<int> v1, vector<int> v2) {
-    // Not Implemented
-    return 42;
+
+double intersect(vector<int> v1, vector<int> v2) {
+    double intersectSum = 0;
+    for(int i = 0; i < v1.size(); i++) {    
+        if(v1[i] == v2[i]) {
+            continue;
+        }
+        intersectSum += min(v1[i],v2[i]);
+    }
+    return intersectSum;
 }
-int corelation(vector<int> v1, vector<int> v2) {
-    // Not Implemented
-    return 42;
+
+double correlation(vector<int> v1, vector<int> v2) {
+    int mean_v1 = 0, mean_v2 = 0;
+    double dividend = 0, diviseur1 = 0, diviseur2 = 0;
+        for(int i = 0; i < v1.size(); i++) {
+            mean_v1 += v1[i];
+            mean_v2 += v2[i];
+        }
+        mean_v1 = mean_v1 / v1.size();
+        mean_v2 = mean_v2 / v2.size();
+        for(int i = 0; i < v1.size(); i++) {
+            dividend += (v1[i] - mean_v1)*(v2[i] - mean_v2);
+            diviseur1 += (v1[i] - mean_v1)*(v1[i] - mean_v1);
+            diviseur2 += (v2[i] - mean_v1)*(v1[i] - mean_v1);
+        }
+
+    return (1 - (dividend / (sqrt(diviseur1 * diviseur2)))) / 1;
 }
-int chisquare(vector<int> v1, vector<int> v2) {
-    float sumChiSquare = 0;
+double chisquare(vector<int> v1, vector<int> v2) {
+    double sumChiSquare = 0;
     for(int i = 0; i < v1.size(); i++) {
         if(v2[i] == 0) {
             continue;
@@ -27,18 +48,14 @@ int chisquare(vector<int> v1, vector<int> v2) {
     }
     return (int) sumChiSquare;
 }
-int bhattacharyya(vector<int> v1, vector<int> v2) {
-    float coefBhattacharyyaSum = 0;
+double bhattacharyya(vector<int> v1, vector<int> v2) {
+    double mean_v1 = 0, mean_v2 = 0, coefBhattacharyaSum = 0;
         for(int i = 0; i < v1.size(); i++) {
-        coefBhattacharyyaSum += sqrt(v1[i] * v2[i]);
-    }
-    return -log(coefBhattacharyyaSum);
-}
-
-int mse(vector<int> v1, vector<int> v2) {
-    float coefBhattacharyyaSum = 0;
-        for(int i = 0; i < v1.size(); i++) {
-        coefBhattacharyyaSum += sqrt(v1[i] * v2[i]);
-    }
-    return -log(coefBhattacharyyaSum);
+            mean_v1 += v1[i];
+            mean_v2 += v2[i];
+            coefBhattacharyaSum += sqrt(v1[i] * v2[i]);
+        }
+    mean_v1 = mean_v1 / v1.size();
+    mean_v2 = mean_v2 / v2.size();
+    return sqrt(1 - (1 / sqrt( mean_v1 * mean_v2 * v1.size() * v1.size())) * coefBhattacharyaSum);
 }
