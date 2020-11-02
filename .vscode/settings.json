@@ -62,6 +62,7 @@
 		"ratio": "cpp",
 		"iomanip": "cpp",
 		"mutex": "cpp",
-		"thread": "cpp"
+		"thread": "cpp",
+		"ios": "cpp"
 	}
 }

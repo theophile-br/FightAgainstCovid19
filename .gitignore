@@ -1,4 +1,5 @@
 out/*
 datasets/COLOR
 datasets/GRAY
+dataset/*
 .DS_Store

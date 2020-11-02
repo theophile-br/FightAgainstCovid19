@@ -1,7 +1,7 @@
 # Fight Against Covid-19 Project
-*write in c++ tested with ubuntu 20*
+*Written in c++ & tested with ubuntu 20*
 
-A program wich detect if a person where a mask correctly with the handcrafted machine learning technic, the **LBP**.
+A program wich detects if a person wears a mask correctly with the handcrafted machine learning technic, the **LBP**.
 
 The dataset I am using is based on this amazing open source project [SaveYourLife](https://github.com/cabani/MaskedFace-Net.).
 

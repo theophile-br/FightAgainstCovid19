@@ -1,7 +1,10 @@
 all: clean prepare build
 
+OUTDIR = ./out
 clean:
-	rm -R ./out
+	if [ -d "${OUTDIR}" ]; then \
+        rm -r ${OUTDIR}; \
+    fi \
 
 prepare:
 	mkdir -p out
