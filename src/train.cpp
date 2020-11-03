@@ -49,10 +49,10 @@ void executeTrain(string path, string maskedType, int trainNumber, bool emptyDes
 		data.str(std::string());
 		pblHist = gray2Hist(img);
 
-		for (int i = pblHist.size() - 1; i >= 0; i--)
+		for (int i = 0; i < pblHist.size(); i++)
 		{
 			data << pblHist[i];
-			if (i > 0)
+			if (i != pblHist.size() - 1)
 			{
 				data << ",";
 			}
