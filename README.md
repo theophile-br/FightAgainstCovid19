@@ -5,7 +5,7 @@ A program wich detects if a person wears a mask correctly with the handcrafted m
 
 The dataset I am using is based on this amazing open source project [SaveYourLife](https://github.com/cabani/MaskedFace-Net.).
 
-## Table of Content
+# Table of Content
 
 * [LBP Rules](#lbp-rules)
 
@@ -17,7 +17,7 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 * [Result](#result)
 
-## LBP Rules
+# LBP Rules
 
 **operator :** ≥
 
@@ -25,9 +25,16 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 ![](documentation/sens.png)
 
+**process :**
+
+| Original | LBP | Histogramme |
+|:--------:|:---:|:-----------:|
+|![](documentation/or.png)|![](documentation/pbl.png)|![](documentation/histo.png)|
+
+
 More info about LBP [here](https://en.wikipedia.org/wiki/Local_binary_patterns).
 
-## The Dataset
+# The Dataset
 Contains Color and GrayScale images in 102 x 102 pixel.
 Download the dataset [here](https://mega.nz/file/t4QSUBSa#CWXHd4EXMDo0F454wrQ5Bz4drlk4GeXA_sCh2nMtuic) !
 
@@ -45,8 +52,8 @@ Put the datasets on the root directory **./datasets** folder.
 └──  src
 ```
 
-## Install C++ Libs dependency
-### MacOs
+# Install C++ Libs dependency
+## MacOs
 - Install [Homebrew](https://brew.sh/index_fr)
 
 - Install **pkg-config** (*A C/C++ library manager*) & **OpenCv** :
@@ -54,26 +61,26 @@ Put the datasets on the root directory **./datasets** folder.
 brew install pkg-config opencv
 ```
 
-### Ubuntu
+## Ubuntu
 
 - Install **pkg-config** & **OpenCv**:
 ```bash 
 sudo apt-get install pkg-config libopencv-dev
 ```
 
-### Check Install :
+## Check Install :
 ```bash 
 pkg-config opencv4 --cflags 
 >> -I/usr/include/opencv4
 ```
 
-## Compile & Execute
+# Compile & Execute
 
 ```bash 
 mkdir out #to prepare project out directory
 ```
 
-### With Make
+# With Make
 
 * Compilation Only
 ```bash 
@@ -94,10 +101,10 @@ make gp #for grayscale image
 make cp #for color image
 ```
 
-### With Debug
+## With Debug
 Use the script for debugging train or predict *.vscode/launch.json*
 
-### Use the Executable
+## Use the Executable
 After Compilation you can choose to run the script manualy like that :
 
 * Exemple: Execute Train for grayscale images
@@ -112,5 +119,5 @@ After Compilation you can choose to run the script manualy like that :
 ./out/pbl_masked -t predict -m gray ./datasets
 ```
 
-## Result
+# Result
 *in progress*
