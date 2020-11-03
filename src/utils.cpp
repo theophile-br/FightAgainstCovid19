@@ -54,9 +54,7 @@ vector<int> gray2Hist(Mat img)
 		}
 	}
 	// UNCOMMENT TO SEE PBL PICTURE
-	Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
-
-	// COMMENTED
+	// Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
 	// imshow("Display window", my_mat);
 	// waitKey(0);
 	return pblHist;
@@ -80,8 +78,12 @@ vector<int> grayDescriptor2Vector(string descriptor) {
 string grayDescriptorGetType(string descriptor) {
 	string delimiterType= ":";
 	size_t pos = descriptor.find(delimiterType);
-    return descriptor.erase(0, pos + delimiterType.length());
-
+	string type = descriptor.erase(0, pos + delimiterType.length());
+	if(type == "1") {
+		return LBP::CMFD;
+	} else {
+		return LBP::IMFD;
+	}
 }
 
 string grayDescriptorGetHistogramPart(string descriptor) {
