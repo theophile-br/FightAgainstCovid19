@@ -22,8 +22,7 @@ double intersect(vector<int> v1, vector<int> v2) {
 }
 
 double correlation(vector<int> v1, vector<int> v2) {
-    double mean_v1 = 0, mean_v2 = 0;
-    double dividend = 0, diviseur1 = 0, diviseur2 = 0;
+    double mean_v1 = 0, mean_v2 = 0, dividend = 0, diviseur1 = 0, diviseur2 = 0;
         for(int i = 0; i < v1.size(); i++) {
             mean_v1 += v1[i];
             mean_v2 += v2[i];

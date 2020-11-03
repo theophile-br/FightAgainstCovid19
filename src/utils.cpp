@@ -72,6 +72,7 @@ vector<int> grayDescriptor2Vector(string descriptor) {
 		v.push_back(atoi( token.c_str() ));
     	descriptor.erase(0, pos + delimiter.length());
 	}
+	v.push_back(atoi( token.c_str() ));
 	return  v;
 }
 

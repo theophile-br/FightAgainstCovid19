@@ -10,6 +10,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 using namespace cv;
@@ -20,53 +21,94 @@ void predict(char* path_to_dataset, char* mode) {
     cout << "\x1B[33mDATASET FOLDER: \033[0m" << path_to_dataset << endl;
     cout << "\x1B[33mTYPE: \033[0m" << mode << endl;
 
-    string pathToDescriptorFile = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/1" + LBP::TRAIN + "/descriptor.txt";
-    string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/1" + LBP::TRAIN + "/" + LBP::IMFD;
-    ifstream descriptorFile(pathToDescriptorFile);
-    std::string line;
-    if(!descriptorFile) {
-        cout << "Cant Open" << endl;
+    vector<string> labelFormula = { "SumOfAbsDif", "Intersect", "Correlation", "Chisquare", "Bhattacharyya"};
+    ofstream outfile;
+    stringstream dataStreamString;
+	dataStreamString.str(string());
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    if(!exists(current_path().string() + "/results")) {
+        create_directories(current_path().string() + "/results");
     }
-    for(auto& p: directory_iterator(pathToTestingSet)) {
-        vector<string> bestCandidatType(5, "");
-        vector<double> minError(5, -1);
-        vector<double> result(5, 0);
-        vector<double> performance(5, NAN);
-        Mat currentImg =  imread(p.path(), IMREAD_GRAYSCALE);
-        vector<int> testDescriptorVector = gray2Hist(currentImg);
-        cout << p.path() << endl;
-        while (getline(descriptorFile, line)) {
-            vector<int> trainDescriptorVector = grayDescriptor2Vector(line);
-            // for(int i = 0; i < trainDescriptorVector.size(); i++) {
-            //     cout << trainDescriptorVector[i] << ","; 
-            // }
-            // cout << endl;
-            for(int i = 0; i < trainDescriptorVector.size(); i++) {
-                cout << testDescriptorVector[i] << ","; 
-            }
-            cout << endl;
-
-            result[0] = sad(testDescriptorVector, trainDescriptorVector);
-            result[1] = intersect(testDescriptorVector, trainDescriptorVector);
-            result[2] = correlation(testDescriptorVector, trainDescriptorVector);
-            result[3] = chisquare(testDescriptorVector, trainDescriptorVector);
-            result[4] = bhattacharyya(testDescriptorVector, trainDescriptorVector);
-            for(int i = 0; i < minError.size(); i++) {
-                if(minError[i] == -1 || minError[i] > result[i] ) {
-                    minError[i] = result[i];
-                    bestCandidatType[i] = grayDescriptorGetType(line);
-                }
-            }
-        } 
-        for(int i = 0; i < minError.size(); i++) {
-            cout << "--------" << endl;
-            cout << "Erreur Min : " << minError[i] << endl;
-            cout << "Deduction : " << bestCandidatType[i] << endl;
-            cout << "--------" << endl;
+    outfile.open(current_path().string() + "/results/" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+    // ITERATE DATASET1 AND DATASET2
+    for(int datasetNumber = 1; datasetNumber <= 2; datasetNumber++){
+        time_t start = time(0);
+        vector<double> success(5, 0);
+        string pathToTestingSet = "";
+        string pathToDescriptorFile = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
+        ifstream descriptorFile(pathToDescriptorFile);
+        std::string line;
+        if(!descriptorFile) {
+            cout << "Cant Open" << endl;
         }
-        descriptorFile.clear();
-        descriptorFile.seekg(0);
+        vector<string> bestCandidatType(5, "");
+        vector<double> minError(5, 10000);
+        vector<double> result(5, 0);
+        double numberOfImageProcess = 0;
+        cout << "START TRAIN/TEST " << datasetNumber << endl;
+        // ITERATE BETWEEN CMFD / IMFD
+        for(int maskedTypeId = 0; maskedTypeId <= 1; maskedTypeId++ ) {
+            string maskedType = "";
+            if(maskedTypeId ==  0) {
+                maskedType = LBP::CMFD;
+            } else {
+                maskedType = LBP::IMFD;
+            };
+            string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
+            for(auto& p: directory_iterator(pathToTestingSet)) {
+
+                Mat currentImg =  imread(p.path(), IMREAD_GRAYSCALE);
+                vector<int> testDescriptorVector = gray2Hist(currentImg);
+                while (getline(descriptorFile, line)) {
+                    vector<int> trainDescriptorVector = grayDescriptor2Vector(line);
+                    result[0] = sad(trainDescriptorVector, testDescriptorVector);
+                    result[1] = intersect(trainDescriptorVector, testDescriptorVector);
+                    result[2] = correlation(trainDescriptorVector, testDescriptorVector);
+                    result[3] = chisquare(trainDescriptorVector, testDescriptorVector);
+                    result[4] = bhattacharyya(trainDescriptorVector, testDescriptorVector);
+                    for(int i = 0; i < minError.size(); i++) {
+                        if(minError[i] > result[i] ) {
+                            minError[i] = result[i];
+                            bestCandidatType[i] = grayDescriptorGetType(line);
+                        }
+                    }
+                }
+                numberOfImageProcess++;
+                cout << maskedType << " : " << numberOfImageProcess << " images processed >>" <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
+                for(int i = 0; i < bestCandidatType.size(); i++) {
+                    if(bestCandidatType[i] == maskedType ) {
+                        success[i] += 1;
+                    }
+                }
+                // if((int)numberOfImageProcess%5 == 0) {
+                //     break;
+                // }
+                // for(int i = 0; i < minError.size(); i++) {
+                //     cout << "--------" << endl;
+                //     cout << "Erreur Min : " << minError[i] << endl;
+                //     cout << "Deduction : " << bestCandidatType[i] << endl;
+                //     cout << "--------" << endl;
+                // }   
+                descriptorFile.clear();
+                descriptorFile.seekg(0, ios::beg);
+            }
+        }
+        time_t end = time(0);
+        double ltmDif = difftime(end,start);
+        dataStreamString << "--------" << endl;
+        dataStreamString << "TRAIN/TEST " << datasetNumber << " RESULT" << endl;
+        dataStreamString << "Number Of Element : " << numberOfImageProcess << endl;
+        dataStreamString << "Performance: " << to_string(ltmDif) << "sec" << endl;
+        for(int i = 0; i < success.size(); i++){
+            success[i] = (success[i] / numberOfImageProcess) * 100;
+        }
+        for(int i = 0; i < success.size(); i++) {
+            dataStreamString << labelFormula[i] << " sucess : \t\t" << success[i] << "%" << endl;
+        }
+        dataStreamString << "--------" << endl;
+        cout << endl;
     }
-
-
+    outfile << dataStreamString.str();
+    outfile.close();
 };
