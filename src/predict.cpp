@@ -22,15 +22,6 @@ void predict(char* path_to_dataset, char* mode) {
     cout << "\x1B[33mTYPE: \033[0m" << mode << endl;
 
     vector<string> labelFormula = { "SumOfAbsDif", "Intersect", "Correlation", "Chisquare", "Bhattacharyya"};
-    ofstream outfile;
-    stringstream dataStreamString;
-	dataStreamString.str(string());
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    if(!exists(current_path().string() + "/results")) {
-        create_directories(current_path().string() + "/results");
-    }
-    outfile.open(current_path().string() + "/results/" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
     // ITERATE DATASET1 AND DATASET2
     for(int datasetNumber = 1; datasetNumber <= 2; datasetNumber++){
         time_t start = time(0);
@@ -75,7 +66,7 @@ void predict(char* path_to_dataset, char* mode) {
                     }
                 }
                 numberOfImageProcess++;
-                cout << maskedType << " : " << numberOfImageProcess << " images processed >>" <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
+                cout <<  "DATASETS NUM "<< datasetNumber << " " << maskedType << " : " << numberOfImageProcess << " images processed >> " <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
                 for(int i = 0; i < bestCandidatType.size(); i++) {
                     if(bestCandidatType[i] == maskedType ) {
                         success[i] += 1;
@@ -94,6 +85,16 @@ void predict(char* path_to_dataset, char* mode) {
                 descriptorFile.seekg(0, ios::beg);
             }
         }
+        ofstream outfile;
+        stringstream dataStreamString;
+	    dataStreamString.str(string());
+        time_t now = time(0);
+        tm *ltm = localtime(&now);
+        if(!exists(current_path().string() + "/results")) {
+            create_directories(current_path().string() + "/results");
+        }
+        outfile.open(current_path().string() + "/results/" + "DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+    
         time_t end = time(0);
         double ltmDif = difftime(end,start);
         dataStreamString << "--------" << endl;
@@ -107,8 +108,7 @@ void predict(char* path_to_dataset, char* mode) {
             dataStreamString << labelFormula[i] << " sucess : \t\t" << success[i] << "%" << endl;
         }
         dataStreamString << "--------" << endl;
-        cout << endl;
+        outfile << dataStreamString.str();
+        outfile.close();
     }
-    outfile << dataStreamString.str();
-    outfile.close();
 };
