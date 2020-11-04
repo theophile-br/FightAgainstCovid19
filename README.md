@@ -17,6 +17,8 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 * [Result](#result)
 
+* [Conclusion](#conclusion)
+
 # LBP Rules
 
 **operator :** ≥
@@ -120,4 +122,23 @@ After Compilation you can choose to run the script manualy like that :
 ```
 
 # Result
-*in progress*
+## GRAYSCALE
+
+```
+Sample :        10_000 / dataset (20 000 images)
+Resolution :    102 x 102 pixel
+Type:           GrayScale
+Processing time :  4 hr. 23 min. 17 sec.
+```
+
+| Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average
+|:-----:|:-----:|:-----:|:-----:|
+SumOfAbsDif    | 	47.56%  |   50.11% | 48.84% |
+Intersect      |	9.96%   |   79.57% | 44.76% |
+Correlation    | 	50.04%  |   51.41% | 50.72% |
+Chisquare      |	47.34%  |   50.24% | 48.79% |
+Bhattacharyya  |	47.34%  |    50.2% | 48.77% |
+
+# Conclusion
+
+The result is very bad. To have better results we must use a higher image resolution and more sample but it will increase the processing time.
