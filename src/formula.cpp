@@ -34,6 +34,7 @@ double correlation(vector<int> v1, vector<int> v2) {
             diviseur1 += (v1[i] - mean_v1)*(v1[i] - mean_v1);
             diviseur2 += (v2[i] - mean_v2)*(v2[i] - mean_v2);
         }
+    // double arCos = acos (corResult[0]) * 180.0 / 3.14159265;
     return dividend / sqrt(diviseur1 * diviseur2);
 }
 double chisquare(vector<int> v1, vector<int> v2) {
