@@ -9,6 +9,8 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 * [LBP Rules](#lbp-rules)
 
+* [Process](#process)
+
 * [The Dataset](#the-dataset)
 
 * [Install C++ Libs dependency](#install-c++-libs-dependency)
@@ -17,7 +19,7 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 * [Result](#result)
 
-* [Conclusion](#conclusion)
+* [Conclusion](#conclusion-&-improvement)
 
 # LBP Rules
 
@@ -27,14 +29,24 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 ![](documentation/sens.png)
 
-**process :**
+More info about LBP [here](https://en.wikipedia.org/wiki/Local_binary_patterns).
+
+# Process
+
+## Project Structure :
+
+*empty*
+
+## GrayScale processing :
 
 | Original | LBP | Histogramme |
 |:--------:|:---:|:-----------:|
 |![](documentation/or.png)|![](documentation/pbl.png)|![](documentation/histo.png)|
 
+## Color processing :
 
-More info about LBP [here](https://en.wikipedia.org/wiki/Local_binary_patterns).
+*empty*
+
 
 # The Dataset
 Contains **10_000 Color** and **10_000 GrayScale** images in **102 x 102 pixel** of people wearing **correctly** or **incorrectly** a mask (the dataset is fairly distributed between correctly/incorrectly masked).
@@ -128,17 +140,17 @@ After Compilation you can choose to run the script manualy like that :
 Sample :        10_000 / dataset (20 000 images)
 Resolution :    102 x 102 pixel
 Type:           GrayScale
-Processing time :  4 hr. 23 min. 17 sec.
+Testing process time :  4 hr. 29 min. 41 sec. / dataset (total 9 hr.)
 ```
 
-| Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average
-|:-----:|:-----:|:-----:|:-----:|
-SumOfAbsDif    | 	47.56%  |   50.11% | 48.84% |
-Intersect      |	9.96%   |   79.57% | 44.76% |
-Correlation    | 	50.04%  |   51.41% | 50.72% |
-Chisquare      |	47.34%  |   50.24% | 48.79% |
-Bhattacharyya  |	47.34%  |    50.2% | 48.77% |
+| Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
+|:--------------:|:------:|:------:|:------:|
+| SumOfAbsDif    | 62.24% | 62.14% | 62.19% |
+| Intersect      | 43.71% | 49.28% | 46.49% |
+| Chisquare      | 63.31% | 63.57% | 63.44% |
+| Bhattacharyya  | 63.36% | 63.25% | 63.30% |
+| Correlation    | 60.52% | 60.49% | 60.50% |
 
-# Conclusion
+# Conclusion & Improvement
 
-The result is very bad. To have better results we must use a higher image resolution and more sample but it will increase the processing time.
+To have better results we must use a higher image resolution and more sample but it will increase the processing time.
