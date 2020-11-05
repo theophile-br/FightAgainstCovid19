@@ -21,7 +21,7 @@ void predict(char* path_to_dataset, char* mode) {
     cout << "\x1B[33mDATASET FOLDER: \033[0m" << path_to_dataset << endl;
     cout << "\x1B[33mTYPE: \033[0m" << mode << endl;
 
-    vector<string> labelFormula = { "SumOfAbsDif", "Intersect", "Correlation", "Chisquare", "Bhattacharyya"};
+    vector<string> labelFormula = { "SumOfAbsDif", "Intersect", "Chisquare", "Bhattacharyya", "Correlation"};
     // ITERATE DATASET1 AND DATASET2
     for(int datasetNumber = 1; datasetNumber <= 2; datasetNumber++){
         time_t start = time(0);
@@ -33,8 +33,6 @@ void predict(char* path_to_dataset, char* mode) {
         if(!descriptorFile) {
             cout << "Cant Open" << endl;
         }
-        vector<string> bestCandidatType(5, "");
-        vector<double> minError(5, 10000);
         vector<double> result(5, 0);
         double numberOfImageProcess = 0;
         cout << "START TRAIN/TEST " << datasetNumber << endl;
@@ -48,21 +46,28 @@ void predict(char* path_to_dataset, char* mode) {
             };
             string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
             for(auto& p: directory_iterator(pathToTestingSet)) {
-
+                vector<string> bestCandidatType(5, "");
+                vector<double> minError(5, 1.79769e+308);
+                minError[4] = -1.0;
                 Mat currentImg =  imread(p.path(), IMREAD_GRAYSCALE);
                 vector<int> testDescriptorVector = gray2Hist(currentImg);
                 while (getline(descriptorFile, line)) {
                     vector<int> trainDescriptorVector = grayDescriptor2Vector(line);
                     result[0] = sad(trainDescriptorVector, testDescriptorVector);
                     result[1] = intersect(trainDescriptorVector, testDescriptorVector);
-                    result[2] = correlation(trainDescriptorVector, testDescriptorVector);
-                    result[3] = chisquare(trainDescriptorVector, testDescriptorVector);
-                    result[4] = bhattacharyya(trainDescriptorVector, testDescriptorVector);
-                    for(int i = 0; i < minError.size(); i++) {
+                    result[2] = chisquare(trainDescriptorVector, testDescriptorVector);
+                    result[3] = bhattacharyya(trainDescriptorVector, testDescriptorVector);
+                    for(int i = 0; i < 4; i++) {
                         if(minError[i] > result[i] ) {
                             minError[i] = result[i];
                             bestCandidatType[i] = grayDescriptorGetType(line);
                         }
+                    }
+                    // CORELATION
+                    result[4] = correlation(trainDescriptorVector, testDescriptorVector);
+                    if(minError[4] <= result[4] ) {
+                        minError[4] = result[4];
+                        bestCandidatType[4] = grayDescriptorGetType(line);
                     }
                 }
                 numberOfImageProcess++;
@@ -72,17 +77,17 @@ void predict(char* path_to_dataset, char* mode) {
                         success[i] += 1;
                     }
                 }
-                // if((int)numberOfImageProcess%5 == 0) {
-                //     break;
-                // }
-                // for(int i = 0; i < minError.size(); i++) {
-                //     cout << "--------" << endl;
-                //     cout << "Erreur Min : " << minError[i] << endl;
-                //     cout << "Deduction : " << bestCandidatType[i] << endl;
-                //     cout << "--------" << endl;
-                // }   
+                for(int i = 0; i < minError.size(); i++) {
+                    cout << "--------" << endl;
+                    cout << "Erreur Min : " << minError[i] << endl;
+                    cout << "Deduction : " << bestCandidatType[i] << endl;
+                    cout << "--------" << endl;
+                }   
                 descriptorFile.clear();
                 descriptorFile.seekg(0, ios::beg);
+                if((int)numberOfImageProcess%50 == 0) {
+                    break;
+                }
             }
         }
         ofstream outfile;
@@ -93,7 +98,7 @@ void predict(char* path_to_dataset, char* mode) {
         if(!exists(current_path().string() + "/results")) {
             create_directories(current_path().string() + "/results");
         }
-        outfile.open(current_path().string() + "/results/" + "DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+        outfile.open(current_path().string() + "/results/DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
     
         time_t end = time(0);
         double ltmDif = difftime(end,start);
