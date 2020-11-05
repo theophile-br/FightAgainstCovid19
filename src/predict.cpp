@@ -77,17 +77,17 @@ void predict(char* path_to_dataset, char* mode) {
                         success[i] += 1;
                     }
                 }
-                for(int i = 0; i < minError.size(); i++) {
-                    cout << "--------" << endl;
-                    cout << "Erreur Min : " << minError[i] << endl;
-                    cout << "Deduction : " << bestCandidatType[i] << endl;
-                    cout << "--------" << endl;
-                }   
+                // for(int i = 0; i < minError.size(); i++) {
+                //     cout << "--------" << endl;
+                //     cout << "Erreur Min : " << minError[i] << endl;
+                //     cout << "Deduction : " << bestCandidatType[i] << endl;
+                //     cout << "--------" << endl;
+                // }   
                 descriptorFile.clear();
                 descriptorFile.seekg(0, ios::beg);
-                if((int)numberOfImageProcess%50 == 0) {
-                    break;
-                }
+                // if((int)numberOfImageProcess%50 == 0) {
+                //     break;
+                // }
             }
         }
         ofstream outfile;
