@@ -53,23 +53,20 @@ vector<int> gray2Hist(Mat img){
 		}
 	}
 	// UNCOMMENT TO SEE PBL PICTURE
-	// Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
-	// imshow("Display window", my_mat);
-	// waitKey(0);
+	Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
+	imshow("Display window", my_mat);
+	waitKey(0);
 	return pblHist;
 }
 
 vector<vector<int>> color2Hist(cv::Mat img){
-	// Not implemented Yet
-
-	vector<vector<int>> v(3);
-	vector<int> R(256,20);
-	vector<int> G(256,50);
-	vector<int> B(256,138);
-	v[0] = R;
-	v[1] = G;
-	v[2] = B;
-	return v;
+	Mat rbg[3];
+	split(img,rbg);
+	vector<vector<int>> pblHist(3);
+	pblHist[0] = gray2Hist(rbg[0]);
+	pblHist[1] = gray2Hist(rbg[1]);
+	pblHist[2] = gray2Hist(rbg[2]);
+	return pblHist;
 }
 
 vector<int> grayDescriptor2Vector(string descriptor) {
