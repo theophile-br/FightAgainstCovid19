@@ -48,14 +48,14 @@ vector<int> gray2Hist(Mat img){
 				decimalValue = decimalValue * 2 + bits[i];
 			}
 			//cout << endl << "data : " << (int)decimalValue << endl;
-			pblImg.push_back(decimalValue);
+			// pblImg.push_back(decimalValue);
 			pblHist[decimalValue]++;
 		}
 	}
 	// UNCOMMENT TO SEE PBL PICTURE
-	Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
-	imshow("Display window", my_mat);
-	waitKey(0);
+	// Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
+	// imshow("Display window", my_mat);
+	// waitKey(0);
 	return pblHist;
 }
 
