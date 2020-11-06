@@ -21,7 +21,8 @@ void train(char *path_to_dataset, char *mode)
 	cout << "\x1B[33mDATA	SET FOLDER: \033[0m" << path_to_dataset << endl;
 	cout << "\x1B[33mTYPE: \033[0m" << mode << endl;
 
-	if(strcmp(mode,"gray") == 0) {
+	if (strcmp(mode, "gray") == 0)
+	{
 		// Train 1 - Correct(CMFD)
 		executeGrayTrain("datasets/GRAY/1TRAIN", "CMFD", 1, true);
 		// Train 1 - Incorrect(IMFD)
@@ -30,26 +31,77 @@ void train(char *path_to_dataset, char *mode)
 		executeGrayTrain("datasets/GRAY/2TRAIN", "CMFD", 2, true);
 		// Train 2 - Incorrect(IMFD)
 		executeGrayTrain("datasets/GRAY/2TRAIN", "IMFD", 2, false);
-	} else {
+	}
+	else
+	{
 		// EXECUTE COLOR TRAIN
 		executeColorTrain("datasets/COLOR/1TRAIN", "CMFD", 1, true);
-
+		// EXECUTE COLOR TRAIN
+		executeColorTrain("datasets/COLOR/1TRAIN", "IMFD", 1, false);
+		// EXECUTE COLOR TRAIN
+		executeColorTrain("datasets/COLOR/2TRAIN", "CMFD", 2, true);
+		// EXECUTE COLOR TRAIN
+		executeColorTrain("datasets/COLOR/2TRAIN", "IMFD", 2, false);
 	}
 };
 
-void executeColorTrain(std::string path, std::string maskedType, int trainNumber, bool emptyDescriptor) {
-	for (auto &p : directory_iterator(path + "/" + maskedType)){
-		Mat img = imread(p.path());
-		vector<vector<int>> pblHist = color2Hist(img); // RETURN A vector<vector<int>> example
-
-		for(int i = 0; i < pblHist.size(); i++ ) {
-			cout << "Vector " << (i + 1) << " : ";  
-			for(int j = 0; j < pblHist[i].size(); j++ ) {
-				cout << pblHist[i][j] << ",";
-			}
-			cout << endl;
-		}
+void executeColorTrain(std::string path, std::string maskedType, int trainNumber, bool emptyDescriptor)
+{
+	cout << "\x1B[32m-- EXECUTING TRAINING " << trainNumber << " --\033[0m" << endl;
+	cout << "\x1B[32m--      TYPE: " << maskedType << "      --\033[0m" << endl;
+	string descriptorPath = path + "/descriptor.txt";
+	ofstream outfile;
+	string result;
+	if (emptyDescriptor)
+	{
+		outfile.open(descriptorPath, ofstream::trunc);
 	}
+	else
+	{
+		outfile.open(descriptorPath, ios_base::app);
+	}
+	stringstream data;
+	int count = 0;
+	for (auto &p : directory_iterator(path + "/" + maskedType))
+	{
+		if (count < 5000)
+		{
+			count++;
+		}
+		cout << "\r"
+			 << "process: "
+			 << (float)count / 5000.f * 100 << "%";
+		Mat img = imread(p.path());
+		vector<vector<int>> pblHist;
+		pblHist.clear();
+		data.str(string());
+		pblHist.clear();
+		pblHist = color2Hist(img); // RETURN A vector<vector<int>> example
+		for (int i = 0; i < pblHist.size(); i++)
+		{
+			for (int j = 0; j < pblHist[i].size(); j++)
+			{
+				data << pblHist[i][j];
+				if (!((i == pblHist.size() - 1) && (j == pblHist[i].size() - 1)))
+				{
+					data << ",";
+				}
+			}
+
+			if (maskedType == LBP::CMFD)
+			{
+				result = "1";
+			}
+			else
+			{
+				result = "0";
+			}
+		}
+		outfile << data.str() << ":" + result << endl;
+	}
+	cout << "" << endl;
+	cout << "\x1B[33m --     DONE     -- \033[0m" << endl;
+	outfile.close();
 }
 
 void executeGrayTrain(std::string path, std::string maskedType, int trainNumber, bool emptyDescriptor)
@@ -72,13 +124,13 @@ void executeGrayTrain(std::string path, std::string maskedType, int trainNumber,
 	int count = 0;
 	for (auto &p : directory_iterator(path + "/" + maskedType))
 	{
-		if (count <= 5000)
+		if (count < 5000)
 		{
 			count++;
 		}
 		cout << "\r"
 			 << "process: "
-			 << " : " << (float)count / 5000.f * 100 << "%";
+			 << (float)count / 5000.f * 100 << "%";
 		Mat img = imread(p.path(), IMREAD_GRAYSCALE);
 		vector<int> pblHist;
 		pblHist.empty();
@@ -105,8 +157,6 @@ void executeGrayTrain(std::string path, std::string maskedType, int trainNumber,
 		outfile << data.str() << ":" + result << endl;
 	}
 	cout << "" << endl;
-	cout << "\x1B[33m DONE \033[0m" << endl;
+	cout << "\x1B[33m --     DONE     -- \033[0m" << endl;
 	outfile.close();
 }
-
-
