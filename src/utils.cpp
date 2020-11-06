@@ -69,9 +69,32 @@ vector<vector<int>> color2Hist(cv::Mat img){
 	return pblHist;
 }
 
+vector<vector<int>> colorDescriptor2Vector(string descriptor){
+	vector<vector<int>> v(3,vector<int>());
+	descriptor = descriptorGetHistogramPart(descriptor);
+	string delimiter = ",";
+	for (int i = 0; i < 3; i++){
+		size_t pos = 0;
+		string token;
+		int count = 0;
+		while ((pos = descriptor.find(delimiter)) != std::string::npos) {
+			count++;
+    		token = descriptor.substr(0, pos);
+			v[i].push_back(atoi( token.c_str() ));
+    		descriptor.erase(0, pos + delimiter.length());
+			if(count == 256){
+				break;
+			}
+		}
+		v[i].push_back(atoi( token.c_str() ));
+		descriptor.erase(0, pos + delimiter.length());
+	}
+	return  v;
+}
+
 vector<int> grayDescriptor2Vector(string descriptor) {
 	vector<int> v;
-    descriptor = grayDescriptorGetHistogramPart(descriptor);
+    descriptor = descriptorGetHistogramPart(descriptor);
 	string delimiter = ",";
 
 	size_t pos = 0;
@@ -85,7 +108,7 @@ vector<int> grayDescriptor2Vector(string descriptor) {
 	return  v;
 }
 
-string grayDescriptorGetType(string descriptor) {
+string descriptorGetType(string descriptor) {
 	string delimiterType= ":";
 	size_t pos = descriptor.find(delimiterType);
 	string type = descriptor.erase(0, pos + delimiterType.length());
@@ -96,7 +119,7 @@ string grayDescriptorGetType(string descriptor) {
 	}
 }
 
-string grayDescriptorGetHistogramPart(string descriptor) {
+string descriptorGetHistogramPart(string descriptor) {
 	string delimiterType= ":";
 	size_t pos = descriptor.find(delimiterType);
 	return descriptor.substr(0, pos);

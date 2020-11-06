@@ -47,6 +47,13 @@ double chisquare(vector<int> v1, vector<int> v2) {
     }
     return sumChiSquare;
 }
+
+double chisquare(vector<vector<int>> v1, vector<vector<int>> v2) {
+    double sumChiSquare = 0;
+
+    return sumChiSquare;
+}
+
 double bhattacharyya(vector<int> v1, vector<int> v2) {
     double mean_v1 = 0, mean_v2 = 0, coefBhattacharyaSum = 0;
         for(int i = 0; i < v1.size(); i++) {
