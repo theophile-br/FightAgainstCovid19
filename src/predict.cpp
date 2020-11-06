@@ -28,19 +28,18 @@ void predict(char* path_to_dataset, char* mode){
 };
 
 void colorPredict(char* path_to_dataset){
-        vector<string> labelFormula = { "SumOfAbsDif", "Intersect", "Chisquare", "Bhattacharyya", "Correlation"};
     // ITERATE DATASET1 AND DATASET2
     for(int datasetNumber = 1; datasetNumber <= 2; datasetNumber++){
         time_t start = time(0);
-        vector<double> success(5, 0);
+        double success = 5;
         string pathToTestingSet = "";
-        string pathToDescriptorFile = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
+        string pathToDescriptorFile = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
         ifstream descriptorFile(pathToDescriptorFile);
         std::string line;
         if(!descriptorFile) {
             cout << "Cant Open" << endl;
         }
-        vector<double> result(5, 0);
+        double result = 0;
         double numberOfImageProcess = 0;
         cout << "START TRAIN/TEST " << datasetNumber << endl;
         // ITERATE BETWEEN CMFD / IMFD
@@ -51,38 +50,26 @@ void colorPredict(char* path_to_dataset){
             } else {
                 maskedType = LBP::IMFD;
             };
-            string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
+            string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
             // ITERATE FOLDER
             for(auto& p: directory_iterator(pathToTestingSet)) {
-                vector<string> bestCandidatType(5, "");
-                vector<double> minError(5, 1.79769e+308);
-                minError[4] = -1.0;
-                Mat currentImg =  imread(p.path(), IMREAD_GRAYSCALE);
-                vector<int> testDescriptorVector = gray2Hist(currentImg);
+                string bestCandidatType = "";
+                double minError = 1.79769e+308;
+                Mat currentImg =  imread(p.path(), IMREAD_COLOR);
+                vector<vector<int>> testDescriptorVector = color2Hist(currentImg);
                 while (getline(descriptorFile, line)) {
-                    vector<int> trainDescriptorVector = grayDescriptor2Vector(line);
-                    result[0] = sad(trainDescriptorVector, testDescriptorVector);
-                    result[1] = intersect(trainDescriptorVector, testDescriptorVector);
-                    result[2] = chisquare(trainDescriptorVector, testDescriptorVector);
-                    result[3] = bhattacharyya(trainDescriptorVector, testDescriptorVector);
-                    for(int i = 0; i < 4; i++) {
-                        if(minError[i] > result[i] ) {
-                            minError[i] = result[i];
-                            bestCandidatType[i] = grayDescriptorGetType(line);
-                        }
-                    }
-                    // CORELATION SPECIAL LOGIC
-                    result[4] = correlation(trainDescriptorVector, testDescriptorVector);
-                    if(minError[4] <= result[4] ) {
-                        minError[4] = result[4];
-                        bestCandidatType[4] = grayDescriptorGetType(line);
+                    vector<vector<int>> trainDescriptorVector = colorDescriptor2Vector(line);
+                    result = chisquare(trainDescriptorVector, testDescriptorVector);
+                    if(minError > result ) {
+                            minError = result;
+                            bestCandidatType = descriptorGetType(line);
                     }
                 }
                 numberOfImageProcess++;
                 cout <<  "DATASETS NUM "<< datasetNumber << " " << maskedType << " : " << numberOfImageProcess << " images processed >> " <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
                 for(int i = 0; i < bestCandidatType.size(); i++) {
-                    if(bestCandidatType[i] == maskedType ) {
-                        success[i] += 1;
+                    if(bestCandidatType == maskedType ) {
+                        success += 1;
                     }
                 }
                 descriptorFile.clear();
@@ -98,19 +85,16 @@ void colorPredict(char* path_to_dataset){
         if(!exists(current_path().string() + "/results")) {
             create_directories(current_path().string() + "/results");
         }
-        outfile.open(current_path().string() + "/results/DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+        outfile.open(current_path().string() + "/results/COLOR_DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
         time_t end = time(0);
         double ltmDif = difftime(end,start);
         dataStreamString << "--------" << endl;
         dataStreamString << "TRAIN/TEST " << datasetNumber << " RESULT" << endl;
+        dataStreamString << "TYPE : COLOR " << endl;
         dataStreamString << "Number Of Element : " << numberOfImageProcess << endl;
         dataStreamString << "Performance: " << to_string(ltmDif) << "sec" << endl;
-        for(int i = 0; i < success.size(); i++){
-            success[i] = (success[i] / numberOfImageProcess) * 100;
-        }
-        for(int i = 0; i < success.size(); i++) {
-            dataStreamString << labelFormula[i] << " sucess : \t\t" << success[i] << "%" << endl;
-        }
+        success = success / numberOfImageProcess * 100;
+        dataStreamString << "Chisquare" << " sucess : \t\t" << success << "%" << endl;
         dataStreamString << "--------" << endl;
         outfile << dataStreamString.str();
         outfile.close();
@@ -159,14 +143,14 @@ void grayPredict(char* path_to_dataset){
                     for(int i = 0; i < 4; i++) {
                         if(minError[i] > result[i] ) {
                             minError[i] = result[i];
-                            bestCandidatType[i] = grayDescriptorGetType(line);
+                            bestCandidatType[i] = descriptorGetType(line);
                         }
                     }
                     // CORELATION SPECIAL LOGIC
                     result[4] = correlation(trainDescriptorVector, testDescriptorVector);
                     if(minError[4] <= result[4] ) {
                         minError[4] = result[4];
-                        bestCandidatType[4] = grayDescriptorGetType(line);
+                        bestCandidatType[4] = descriptorGetType(line);
                     }
                 }
                 numberOfImageProcess++;
@@ -189,12 +173,13 @@ void grayPredict(char* path_to_dataset){
         if(!exists(current_path().string() + "/results")) {
             create_directories(current_path().string() + "/results");
         }
-        outfile.open(current_path().string() + "/results/DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+        outfile.open(current_path().string() + "/results/COLOR_DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
         time_t end = time(0);
         double ltmDif = difftime(end,start);
         dataStreamString << "--------" << endl;
         dataStreamString << "TRAIN/TEST " << datasetNumber << " RESULT" << endl;
         dataStreamString << "Number Of Element : " << numberOfImageProcess << endl;
+        dataStreamString << "TYPE : GRAY " << endl;
         dataStreamString << "Performance: " << to_string(ltmDif) << "sec" << endl;
         for(int i = 0; i < success.size(); i++){
             success[i] = (success[i] / numberOfImageProcess) * 100;
