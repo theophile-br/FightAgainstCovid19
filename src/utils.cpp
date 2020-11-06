@@ -15,8 +15,7 @@ const string LBP::GRAY("GRAY");
 const string LBP::TRAIN("TRAIN");
 const string LBP::TEST("TEST");
 
-vector<int> gray2Hist(Mat img)
-{
+vector<int> gray2Hist(Mat img){
 	vector<uchar> pblImg;
 	vector<int> pblHist(256, 0);
 	for (int i = 1; i < img.rows - 1; i++)
@@ -58,6 +57,19 @@ vector<int> gray2Hist(Mat img)
 	// imshow("Display window", my_mat);
 	// waitKey(0);
 	return pblHist;
+}
+
+vector<vector<int>> color2Hist(cv::Mat img){
+	// Not implemented Yet
+
+	vector<vector<int>> v(3);
+	vector<int> R(256,20);
+	vector<int> G(256,50);
+	vector<int> B(256,138);
+	v[0] = R;
+	v[1] = G;
+	v[2] = B;
+	return v;
 }
 
 vector<int> grayDescriptor2Vector(string descriptor) {
