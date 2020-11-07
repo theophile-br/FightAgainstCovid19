@@ -71,12 +71,12 @@ void executeColorTrain(std::string path, std::string maskedType, int trainNumber
 		cout << "\r"
 			 << "process: "
 			 << (float)count / 5000.f * 100 << "%";
-		Mat img = imread(p.path());
+		Mat img = imread(p.path(), IMREAD_COLOR);
 		vector<vector<int>> pblHist;
 		pblHist.clear();
 		data.str(string());
 		pblHist.clear();
-		pblHist = color2Hist(img); // RETURN A vector<vector<int>> example
+		pblHist = color2Hist(img);
 		for (int i = 0; i < pblHist.size(); i++)
 		{
 			for (int j = 0; j < pblHist[i].size(); j++)
