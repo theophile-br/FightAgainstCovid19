@@ -21,6 +21,6 @@ std::vector<std::vector<int>> color2Hist(cv::Mat img);
 std::string descriptorGetType(std::string descriptor);
 std::vector<int> grayDescriptor2Vector(std::string descriptor);
 std::string descriptorGetHistogramPart(std::string descriptor);
-vector<vector<int>> colorDescriptor2Vector(string descriptor);
+std::vector<std::vector<int>> colorDescriptor2Vector(std::string descriptor);
 
 #endif

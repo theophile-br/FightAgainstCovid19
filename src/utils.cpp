@@ -44,18 +44,11 @@ vector<int> gray2Hist(Mat img){
 			uchar decimalValue = 0;
 			for (int i = bits.size() - 1; i > 0; i--)
 			{
-				//cout << (int)bits[i];
 				decimalValue = decimalValue * 2 + bits[i];
 			}
-			//cout << endl << "data : " << (int)decimalValue << endl;
-			// pblImg.push_back(decimalValue);
 			pblHist[decimalValue]++;
 		}
 	}
-	// UNCOMMENT TO SEE PBL PICTURE
-	// Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
-	// imshow("Display window", my_mat);
-	// waitKey(0);
 	return pblHist;
 }
 
@@ -82,7 +75,7 @@ vector<vector<int>> colorDescriptor2Vector(string descriptor){
     		token = descriptor.substr(0, pos);
 			v[i].push_back(atoi( token.c_str() ));
     		descriptor.erase(0, pos + delimiter.length());
-			if(count == 256){
+			if(count == 255){
 				break;
 			}
 		}
