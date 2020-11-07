@@ -34,7 +34,6 @@ double correlation(vector<int> v1, vector<int> v2) {
             diviseur1 += (v1[i] - mean_v1)*(v1[i] - mean_v1);
             diviseur2 += (v2[i] - mean_v2)*(v2[i] - mean_v2);
         }
-    // double arCos = acos (corResult[0]) * 180.0 / 3.14159265;
     return dividend / sqrt(diviseur1 * diviseur2);
 }
 double chisquare(vector<int> v1, vector<int> v2) {
@@ -49,9 +48,20 @@ double chisquare(vector<int> v1, vector<int> v2) {
 }
 
 double chisquare(vector<vector<int>> v1, vector<vector<int>> v2) {
-    double sumChiSquare = 0;
-
-    return sumChiSquare;
+    double sumForAvgChiSquare = 0;
+    vector<int> sumChiSquare(3,0);
+    for(int j = 0; j < v1.size(); j++) {
+        for(int i = 0; i < v1[j].size(); i++) {
+            if(v2[j][i] == 0) {
+                continue;
+            }
+        sumChiSquare[j] += ((v1[j][i] - v2[j][i]) * (v1[j][i] - v2[j][i])) / v2[j][i];
+        }
+    }
+    for(int i=0; i < sumChiSquare.size(); i++) {
+        sumForAvgChiSquare += sumChiSquare[i];
+    }
+    return sumForAvgChiSquare / sumChiSquare.size();
 }
 
 double bhattacharyya(vector<int> v1, vector<int> v2) {
