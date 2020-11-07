@@ -31,7 +31,7 @@ void colorPredict(char* path_to_dataset){
     // ITERATE DATASET1 AND DATASET2
     for(int datasetNumber = 1; datasetNumber <= 2; datasetNumber++){
         time_t start = time(0);
-        double success = 5;
+        double success = 0;
         string pathToTestingSet = "";
         string pathToDescriptorFile = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
         ifstream descriptorFile(pathToDescriptorFile);
@@ -67,10 +67,11 @@ void colorPredict(char* path_to_dataset){
                 }
                 numberOfImageProcess++;
                 cout <<  "DATASETS NUM "<< datasetNumber << " " << maskedType << " : " << numberOfImageProcess << " images processed >> " <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
-                for(int i = 0; i < bestCandidatType.size(); i++) {
-                    if(bestCandidatType == maskedType ) {
-                        success += 1;
-                    }
+                cout << "-------" << endl;
+                cout << "Error : " << minError << endl;
+                cout << "Predict : " << bestCandidatType << endl;
+                if(bestCandidatType == maskedType ) {
+                    success += 1;
                 }
                 descriptorFile.clear();
                 descriptorFile.seekg(0, ios::beg);
@@ -85,7 +86,7 @@ void colorPredict(char* path_to_dataset){
         if(!exists(current_path().string() + "/results")) {
             create_directories(current_path().string() + "/results");
         }
-        outfile.open(current_path().string() + "/results/COLOR_DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+        outfile.open(current_path().string() + "/results/" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "COLOR_DATASET_" + to_string(datasetNumber)+ "-" + "result.txt");
         time_t end = time(0);
         double ltmDif = difftime(end,start);
         dataStreamString << "--------" << endl;
@@ -173,7 +174,7 @@ void grayPredict(char* path_to_dataset){
         if(!exists(current_path().string() + "/results")) {
             create_directories(current_path().string() + "/results");
         }
-        outfile.open(current_path().string() + "/results/COLOR_DATASET" + to_string(datasetNumber)+ "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+        outfile.open(current_path().string() + "/results/COLOR_DATASET" + "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
         time_t end = time(0);
         double ltmDif = difftime(end,start);
         dataStreamString << "--------" << endl;
