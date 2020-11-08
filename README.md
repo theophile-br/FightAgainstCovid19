@@ -99,6 +99,10 @@ Working with color images is a little more efficient than gray images with this 
 
 To have better results we must use a higher image resolution and more sample but it will increase the training and testing time.
 
+We can try also an other direction for neighboor discorvery (clockWise / anticlockwise) for an other histogram distribution like that
+
+![clockwise](documentation/sensClockWise.png)
+
 # Run the program
 
 ## Project Structure :
