@@ -43,14 +43,14 @@ Contains **10_000 Color** and **10_000 GrayScale** images in **102 x 102 pixel**
 | Type | Original | LBP |
 |:--------:|:---:|:-----------:|
 | Image |![](documentation/gray/or.png)|![](documentation/gray/lbp.png)|
-| Histogram | |![](documentation/histo.png)|
+| Histogram | |![](documentation/gray/LBPH.png)|
 
 ## Color processing :
 
 | Type | Original | LBP Red Layer |  LBP Blue Layer |  LBP Green Layer |
 |:--------:|:---:|:-----------:|:-----------:|:-----------:|
 | Image |![](documentation/color/or.png)|![](documentation/color/R.png)|![](documentation/color/G.png)|![](documentation/color/B.png)|![](documentation/histo.png)|
-| Histogram ||![](documentation/histo.png)|![](documentation/histo.png)|![](documentation/histo.png)|
+| Histogram ||![](documentation/color/RH.png)|![](documentation/color/GH.png)|![](documentation/color/BH.png)|
 
 ## Distance Formula
 
@@ -91,11 +91,13 @@ Testing process time :  10 hr. 28 min. / dataset (total 20 hr.)
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
 |:--------------:|:------:|:------:|:------:|
-| Chisquare      | 64.05% | **progress** | **progress** |
+| Chisquare      | 64.05% | 64.55% | 64.30% |
 
 # Conclusion
 
-Working with color images is more efficient that gray images but to have better results we must use a higher image resolution and more sample but it will increase the processing time.
+Working with color images is a little more efficient than gray images with this dataset. 64 % is not enough to tell that this prediction models is good.
+
+To have better results we must use a higher image resolution and more sample but it will increase the training and testing time.
 
 # Run the program
 
