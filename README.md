@@ -30,7 +30,7 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 **operator :** ≥
 
-**direction :** ( 1 to 8 )
+**direction :** Clockwise ( 1 to 8 )
 
 ![](documentation/sens.png)
 
@@ -42,15 +42,14 @@ Contains **10_000 Color** and **10_000 GrayScale** images in **102 x 102 pixel**
 
 | Type | Original | LBP |
 |:--------:|:---:|:-----------:|
-| Image |![](documentation/gray/or.png)|![](documentation/gray/lbp.png)|
-| Histogram | |![](documentation/gray/LBPH.png)|
+| Image |![](documentation/gray/or.jpg)|![](documentation/gray/lbp.png)|
 
 ## Color processing :
 
 | Type | Original | LBP Red Layer |  LBP Blue Layer |  LBP Green Layer |
 |:--------:|:---:|:-----------:|:-----------:|:-----------:|
-| Image |![](documentation/color/or.png)|![](documentation/color/R.png)|![](documentation/color/G.png)|![](documentation/color/B.png)|![](documentation/histo.png)|
-| Histogram ||![](documentation/color/RH.png)|![](documentation/color/GH.png)|![](documentation/color/BH.png)|
+| Image |![](documentation/color/or.jpg)|![](documentation/color/R.png)|![](documentation/color/G.png)|![](documentation/color/B.png)|![](documentation/histo.png)|
+
 
 ## Distance Formula
 
@@ -61,7 +60,7 @@ Contains **10_000 Color** and **10_000 GrayScale** images in **102 x 102 pixel**
 |**Missmatch**|+∞|-1|+∞|+∞|+∞|
 
 # Result
-## GRAYSCALE TESTING PROCESS
+## GRAYSCALE TESTING PROCESS *in progress..*
 
 ```
 Sample :        10_000 / dataset (20 000 images)
@@ -73,13 +72,13 @@ Testing process time :  4 hr. 29 min. 41 sec. / dataset (total 9 hr.)
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
 |:--------------:|:------:|:------:|:------:|
-| SumOfAbsDif    | 62.24% | 62.14% | 62.19% |
-| Intersect      | 43.71% | 49.28% | 46.49% |
-| Chisquare      | 63.31% | 63.57% | 63.44% |
-| Bhattacharyya  | 63.36% | 63.25% | 63.30% |
-| Correlation    | 60.52% | 60.49% | 60.50% |
+| SumOfAbsDif    | 0% | 0% | 0% |
+| Intersect      | 0% | 0% | 0% |
+| Chisquare      | 0% | 0% | 0% |
+| Bhattacharyya  | 0% | 0% | 0% |
+| Correlation    | 0% | 0% | 0% |
 
-## COLOR TESTING PROCESS
+## COLOR TESTING PROCESS *in progress..*
 
 ```
 Sample :        10_000 / dataset (20 000 images)
@@ -91,7 +90,7 @@ Testing process time :  10 hr. 28 min. / dataset (total 20 hr.)
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
 |:--------------:|:------:|:------:|:------:|
-| Chisquare      | 64.05% | 64.55% | 64.30% |
+| Chisquare      | 0% | 0% | 0% |
 
 # Conclusion
 
@@ -99,9 +98,8 @@ Working with color images is a little more efficient than gray images with this 
 
 To have better results we must use a higher image resolution and more sample but it will increase the training and testing time.
 
-We can try also an other direction for neighboor discorvery (clockWise / anticlockwise) for an other histogram distribution like that
+We can try also an other direction for neighboor discorvery (anticlockwise) for an other histogram distribution like that
 
-![clockwise](documentation/sensClockWise.png)
 
 # Run the program
 
