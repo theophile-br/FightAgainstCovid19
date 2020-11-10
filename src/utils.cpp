@@ -74,16 +74,14 @@ vector<vector<int>> colorDescriptor2Vector(string descriptor){
     		token = descriptor.substr(0, pos);
 			v[i].push_back(atoi( token.c_str() ));
     		descriptor.erase(0, pos + delimiter.length());
-			if(count == 255){
+			if(count == 256){
 				break;
 			}
 		}
-		if((pos = descriptor.find(delimiter)) != std::string::npos) {
-			token = descriptor.substr(0, pos);
-			v[i].push_back(atoi( token.c_str() ));
-			descriptor.erase(0, pos + delimiter.length());
-		}
 	}
+	token = descriptor.substr(0, pos);
+	v[2].push_back(atoi( token.c_str() ));
+	descriptor.erase(0, pos + delimiter.length());
 	return  v;
 }
 

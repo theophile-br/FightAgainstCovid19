@@ -50,6 +50,7 @@ double chisquare(vector<int> &v1, vector<int> &v2) {
 double chisquare(vector<vector<int>> &v1, vector<vector<int>> &v2) {
     double sumForAvgChiSquare = 0;
     vector<int> sumChiSquare(3,0);
+    // cout << v1[2].size() << endl;
     for(int j = 0; j < 3; j++) {
         for(int i = 0; i < 256; i++) {
             if(v2[j][i] == 0) {
@@ -61,7 +62,7 @@ double chisquare(vector<vector<int>> &v1, vector<vector<int>> &v2) {
     for(int i=0; i < 3; i++) {
         sumForAvgChiSquare += sumChiSquare[i];
     }
-    return sumForAvgChiSquare / 3;
+    return sumForAvgChiSquare / 3.0;
 }
 
 double bhattacharyya(vector<int> &v1, vector<int> &v2) {
