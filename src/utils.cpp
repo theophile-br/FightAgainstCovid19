@@ -22,20 +22,20 @@ vector<int> gray2Hist(Mat &img){
 	{
 		for (int x = 1; x < img.cols - 1; x++)
 		{
-			vector<uchar> bits;
+			uchar bits[8];
 			int center_pixel = img.at<uchar>(y, x);
 
-			bits.push_back((center_pixel >= img.at<uchar>(y-1, x-1))?1:0);
-			bits.push_back((center_pixel >= img.at<uchar>(y-1, x))?1:0);
-			bits.push_back((center_pixel >= img.at<uchar>(y-1, x+1))?1:0);
-			bits.push_back((center_pixel >= img.at<uchar>(y, x+1))?1:0);
-			bits.push_back((center_pixel >= img.at<uchar>(y+1, x+1))?1:0);
-			bits.push_back((center_pixel >= img.at<uchar>(y+1, x))?1:0);
-			bits.push_back((center_pixel >= img.at<uchar>(y+1, x-1))?1:0);
-			bits.push_back((center_pixel >= img.at<uchar>(y, x-1))?1:0);
+			bits[0] = (center_pixel >= img.at<uchar>(y-1, x-1))?1:0;
+			bits[1] = (center_pixel >= img.at<uchar>(y-1, x))?1:0;
+			bits[2] = (center_pixel >= img.at<uchar>(y-1, x+1))?1:0;
+			bits[3] = (center_pixel >= img.at<uchar>(y, x+1))?1:0;
+			bits[4] = (center_pixel >= img.at<uchar>(y+1, x+1))?1:0;
+			bits[5] = (center_pixel >= img.at<uchar>(y+1, x))?1:0;
+			bits[6] = (center_pixel >= img.at<uchar>(y+1, x-1))?1:0;
+			bits[7] = (center_pixel >= img.at<uchar>(y, x-1))?1:0;
 
 			int decimalValue = 0;
-			for (int i = 0; i < bits.size(); i++)
+			for (int i = 0; i < 8; i++)
 			{
 				// cout << (int)bits[i];
 				decimalValue += pow(2, i) * bits[i];
