@@ -15,7 +15,7 @@ const string LBP::GRAY("GRAY");
 const string LBP::TRAIN("TRAIN");
 const string LBP::TEST("TEST");
 
-vector<int> gray2Hist(Mat img){
+vector<int> gray2Hist(Mat &img){
 	vector<uchar> pblImg;
 	vector<int> pblHist(256, 0);
 	for (int y = 1; y < img.rows - 1; y++)
@@ -51,7 +51,7 @@ vector<int> gray2Hist(Mat img){
 	return pblHist;
 }
 
-vector<vector<int>> color2Hist(cv::Mat img){
+vector<vector<int>> color2Hist(cv::Mat &img){
 	Mat rbg[3];
 	split(img,rbg);
 	vector<vector<int>> pblHist(3);

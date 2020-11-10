@@ -2,7 +2,7 @@
 
 using namespace std;
 
-double sad(vector<int> v1, vector<int> v2) {
+double sad(vector<int> &v1, vector<int> &v2) {
     double sumOfDifference = 0;
     for(int i = 0; i < v1.size(); i++) {
         sumOfDifference += abs((double)v1[i] - (double)v2[i]);
@@ -10,7 +10,7 @@ double sad(vector<int> v1, vector<int> v2) {
     return sumOfDifference;
 }
 
-double intersect(vector<int> v1, vector<int> v2) {
+double intersect(vector<int> &v1, vector<int> &v2) {
     double intersectSum = 0;
     for(int i = 0; i < v1.size(); i++) {    
         if(v1[i] == v2[i]) {
@@ -21,7 +21,7 @@ double intersect(vector<int> v1, vector<int> v2) {
     return intersectSum;
 }
 
-double correlation(vector<int> v1, vector<int> v2) {
+double correlation(vector<int> &v1, vector<int> &v2) {
     double mean_v1 = 0, mean_v2 = 0, dividend = 0, diviseur1 = 0, diviseur2 = 0;
         for(int i = 0; i < v1.size(); i++) {
             mean_v1 += v1[i];
@@ -36,7 +36,7 @@ double correlation(vector<int> v1, vector<int> v2) {
         }
     return dividend / sqrt(diviseur1 * diviseur2);
 }
-double chisquare(vector<int> v1, vector<int> v2) {
+double chisquare(vector<int> &v1, vector<int> &v2) {
     double sumChiSquare = 0;
     for(int i = 0; i < v1.size(); i++) {
         if(v2[i] == 0) {
@@ -47,7 +47,7 @@ double chisquare(vector<int> v1, vector<int> v2) {
     return sumChiSquare;
 }
 
-double chisquare(vector<vector<int>> v1, vector<vector<int>> v2) {
+double chisquare(vector<vector<int>> &v1, vector<vector<int>> &v2) {
     double sumForAvgChiSquare = 0;
     vector<int> sumChiSquare(3,0);
     for(int j = 0; j < v1.size(); j++) {
@@ -64,7 +64,7 @@ double chisquare(vector<vector<int>> v1, vector<vector<int>> v2) {
     return sumForAvgChiSquare / sumChiSquare.size();
 }
 
-double bhattacharyya(vector<int> v1, vector<int> v2) {
+double bhattacharyya(vector<int> &v1, vector<int> &v2) {
     double mean_v1 = 0, mean_v2 = 0, coefBhattacharyaSum = 0;
         for(int i = 0; i < v1.size(); i++) {
             mean_v1 += v1[i];
