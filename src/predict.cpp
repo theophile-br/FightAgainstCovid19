@@ -50,7 +50,7 @@ void colorPredict(char* path_to_dataset){
             } else {
                 maskedType = LBP::IMFD;
             };
-            string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TRAIN + "/" + maskedType;
+            string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
             // ITERATE FOLDER
             for(auto& p: directory_iterator(pathToTestingSet)) {
                 string bestCandidatType = "";
