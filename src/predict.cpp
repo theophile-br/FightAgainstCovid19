@@ -66,15 +66,14 @@ void colorPredict(char* path_to_dataset){
                     }
                 }
                 numberOfImageProcess++;
-                cout <<  "DATASETS NUM "<< datasetNumber << " " << maskedType << " : " << numberOfImageProcess << " images processed >> " <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
-                cout << "-------" << endl;
-                cout << "Error : " << minError << endl;
-                cout << "Predict : " << bestCandidatType << endl;
                 if(bestCandidatType == maskedType ) {
                     success += 1;
                 }
                 descriptorFile.clear();
                 descriptorFile.seekg(0, ios::beg);
+                cout <<  "DATASETS NUM "<< datasetNumber << " " << maskedType << " : " << numberOfImageProcess << " images processed >> " <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
+                cout << "Chisquare " << " --- Predict : " <<  bestCandidatType << " --- MinError : " <<  minError <<  " --- Rate : " << success / numberOfImageProcess * 100 << " %" << endl;
+                cout << "---" << endl;
             }
         }
         // SAVE FILE RESULT
@@ -149,19 +148,22 @@ void grayPredict(char* path_to_dataset){
                     }
                     // CORELATION SPECIAL LOGIC
                     result[4] = correlation(trainDescriptorVector, testDescriptorVector);
-                    if(minError[4] <= result[4] ) {
+                    if(minError[4] < result[4] ) {
                         minError[4] = result[4];
                         bestCandidatType[4] = descriptorGetType(line);
                     }
                 }
                 numberOfImageProcess++;
+                cout << " ----- " << endl;
                 cout <<  "DATASETS NUM "<< datasetNumber << " " << maskedType << " : " << numberOfImageProcess << " images processed >> " <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
                 for(int i = 0; i < bestCandidatType.size(); i++) {
                     if(bestCandidatType[i] == maskedType ) {
                         success[i] += 1;
                     }
+                    cout << labelFormula[i] << " --- Predict : " <<  bestCandidatType[i] << " --- MinError : " <<  minError[i] << " --- Rate : " << success[i] / numberOfImageProcess * 100 << " %" << endl;
                 }
                 descriptorFile.clear();
+
                 descriptorFile.seekg(0, ios::beg);
             }
         }
@@ -174,7 +176,7 @@ void grayPredict(char* path_to_dataset){
         if(!exists(current_path().string() + "/results")) {
             create_directories(current_path().string() + "/results");
         }
-        outfile.open(current_path().string() + "/results/COLOR_DATASET" + "-" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "result.txt");
+        outfile.open(current_path().string() + "/results/" + to_string(ltm->tm_year) + "-" + to_string(ltm->tm_mon) + "-" + to_string(ltm->tm_mday) + "_" + to_string(ltm->tm_hour) + "h" + to_string(ltm->tm_min) + "m" + to_string(ltm->tm_sec) + "s-" + "GRAY_DATASET_" + to_string(datasetNumber)+ "-" + "result.txt");
         time_t end = time(0);
         double ltmDif = difftime(end,start);
         dataStreamString << "--------" << endl;

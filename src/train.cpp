@@ -137,7 +137,10 @@ void executeGrayTrain(std::string path, std::string maskedType, int trainNumber,
 		data.clear();
 		data.str(std::string());
 		pblHist = gray2Hist(img);
-
+		// for(int i = 0; i < pblHist.size(); i++) {
+		// 	cout << pblHist[i] << " , ";
+		// }
+		// cout << endl;
 		for (int i = 0; i < pblHist.size(); i++)
 		{
 			data << pblHist[i];

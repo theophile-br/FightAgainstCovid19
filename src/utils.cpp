@@ -18,37 +18,36 @@ const string LBP::TEST("TEST");
 vector<int> gray2Hist(Mat img){
 	vector<uchar> pblImg;
 	vector<int> pblHist(256, 0);
-	for (int i = 1; i < img.rows - 1; i++)
+	for (int y = 1; y < img.rows - 1; y++)
 	{
-		for (int j = 1; j < img.cols - 1; j++)
+		for (int x = 1; x < img.cols - 1; x++)
 		{
 			vector<uchar> bits;
-			int center_pixel = img.at<uchar>(i, j);
-			for (int y = i + 1; y >= i - 1; y--)
+			int center_pixel = img.at<uchar>(y, x);
+
+			bits.push_back((center_pixel >= img.at<uchar>(y-1, x-1))?1:0);
+			bits.push_back((center_pixel >= img.at<uchar>(y-1, x))?1:0);
+			bits.push_back((center_pixel >= img.at<uchar>(y-1, x+1))?1:0);
+			bits.push_back((center_pixel >= img.at<uchar>(y, x+1))?1:0);
+			bits.push_back((center_pixel >= img.at<uchar>(y+1, x+1))?1:0);
+			bits.push_back((center_pixel >= img.at<uchar>(y+1, x))?1:0);
+			bits.push_back((center_pixel >= img.at<uchar>(y+1, x-1))?1:0);
+			bits.push_back((center_pixel >= img.at<uchar>(y, x-1))?1:0);
+
+			int decimalValue = 0;
+			for (int i = 0; i < bits.size(); i++)
 			{
-				for (int x = j + 1; x >= j - 1; x--)
-				{
-					if (x == j && y == i)
-						continue;
-					int curent_pixel = img.at<uchar>(y, x);
-					if (center_pixel >= curent_pixel)
-					{
-						bits.push_back(1);
-					}
-					else
-					{
-						bits.push_back(0);
-					}
-				}
+				// cout << (int)bits[i];
+				decimalValue += pow(2, i) * bits[i];
 			}
-			uchar decimalValue = 0;
-			for (int i = bits.size() - 1; i > 0; i--)
-			{
-				decimalValue = decimalValue * 2 + bits[i];
-			}
+			// pblImg.push_back(decimalValue);
+			// cout << endl << (int)decimalValue << endl;
 			pblHist[decimalValue]++;
 		}
 	}
+	// Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
+	// imshow("Display window", my_mat);
+	// waitKey(0);
 	return pblHist;
 }
 
@@ -66,9 +65,9 @@ vector<vector<int>> colorDescriptor2Vector(string descriptor){
 	vector<vector<int>> v(3,vector<int>());
 	descriptor = descriptorGetHistogramPart(descriptor);
 	string delimiter = ",";
+	size_t pos = 0;
+	string token;
 	for (int i = 0; i < 3; i++){
-		size_t pos = 0;
-		string token;
 		int count = 0;
 		while ((pos = descriptor.find(delimiter)) != std::string::npos) {
 			count++;
@@ -79,8 +78,11 @@ vector<vector<int>> colorDescriptor2Vector(string descriptor){
 				break;
 			}
 		}
-		v[i].push_back(atoi( token.c_str() ));
-		descriptor.erase(0, pos + delimiter.length());
+		if((pos = descriptor.find(delimiter)) != std::string::npos) {
+			token = descriptor.substr(0, pos);
+			v[i].push_back(atoi( token.c_str() ));
+			descriptor.erase(0, pos + delimiter.length());
+		}
 	}
 	return  v;
 }
@@ -89,7 +91,6 @@ vector<int> grayDescriptor2Vector(string descriptor) {
 	vector<int> v;
     descriptor = descriptorGetHistogramPart(descriptor);
 	string delimiter = ",";
-
 	size_t pos = 0;
 	string token;
 	while ((pos = descriptor.find(delimiter)) != std::string::npos) {
@@ -97,6 +98,7 @@ vector<int> grayDescriptor2Vector(string descriptor) {
 		v.push_back(atoi( token.c_str() ));
     	descriptor.erase(0, pos + delimiter.length());
 	}
+	token = descriptor.substr(0, pos);
 	v.push_back(atoi( token.c_str() ));
 	return  v;
 }
