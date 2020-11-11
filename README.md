@@ -175,7 +175,7 @@ cmake .. && make
 ## Execute
 
 ```bash
-FightAgainstCovid19/..
+FightAgainstCovid19 -h
 Accept only three argument.
     Arguments:
         --type <train|predict> 
