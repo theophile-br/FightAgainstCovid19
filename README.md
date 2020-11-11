@@ -23,6 +23,8 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 * [Run the Program](#run-the-program)
 
+* [Log](#Log)
+
 
 # The Process
 
@@ -60,23 +62,23 @@ Contains **10_000 Color** and **10_000 GrayScale** images in **102 x 102 pixel**
 |**Missmatch**|+∞|-1|+∞|+∞|+∞|
 
 # Result
-## GRAYSCALE TESTING PROCESS *in progress..*
+## GRAYSCALE TESTING PROCESS
 
 ```
 Sample :        10_000 / dataset (20 000 images)
 Resolution :    102 x 102 pixel
 Type:           GrayScale
 PC Config : IMac 3.4 GHz i5 4Core / 16 Go DDR4 2400 MHz 
-Testing process time :  4 hr. 29 min. 41 sec. / dataset (total 9 hr.)
+Testing process time :  3 hr. 40 min. 11 sec. / dataset (total 7 hr. 20 min. 22 sec.)
 ```
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
 |:--------------:|:------:|:------:|:------:|
-| SumOfAbsDif    | 0% | 0% | 0% |
-| Intersect      | 0% | 0% | 0% |
-| Chisquare      | 0% | 0% | 0% |
-| Bhattacharyya  | 0% | 0% | 0% |
-| Correlation    | 0% | 0% | 0% |
+| SumOfAbsDif    | 63.31% | 63.32% | 63.31% |
+| Intersect      | 43.21% | 49.24% | 46.22% |
+| Chisquare      | 63.96% | 64.21% | 64.08% |
+| Bhattacharyya  | 64.39% | 64.2% | 64.30% |
+| Correlation    | 60.75% | 60.28% | 60.51% |
 
 ## COLOR TESTING PROCESS *in progress..*
 
@@ -85,12 +87,12 @@ Sample :        10_000 / dataset (20 000 images)
 Resolution :    102 x 102 pixel
 Type:           Color (RGB)
 PC Config : IMac 3.4 GHz i5 4Core / 16 Go DDR4 2400 MHz 
-Testing process time :  10 hr. 28 min. / dataset (total 20 hr.)
+Testing process time :  10 hr. 22 min. / dataset (total 20 hr. 44 min.)
 ```
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
 |:--------------:|:------:|:------:|:------:|
-| Chisquare      | 0% | 0% | 0% |
+| Chisquare      | 65.06% | 0% | 0% |
 
 # Conclusion
 
@@ -98,7 +100,7 @@ Working with color images is a little more efficient than gray images with this 
 
 To have better results we must use a higher image resolution and more sample but it will increase the training and testing time.
 
-We can try also an other direction for neighboor discorvery (anticlockwise) for an other histogram distribution like that
+We can try also an other direction for neighboor discorvery (anticlockwise, ..) for an other histogram distribution.
 
 
 # Run the program
@@ -204,3 +206,23 @@ After Compilation you can choose to run the script manualy like that :
 ```bash 
 ./out/pbl_masked -t predict -m gray ./datasets
 ```
+
+# Log
+
+## 10/11/2020 
+
+**Bug Fix :**
+- Neighboord discovery fails, result of an incomplete histogram.
+- Some uchar to int convertion fail.
+
+**Logic Change :**
+- Clockwise for Neighboord discovery.
+
+**Performance Improvement :**
+- Mat variable type pass by reference in function.
+- the vector object decrease the performance of the programme (vector.size() vector.push_back())
+vector object replace by simple array in some operation.
+- Grayscale Testing Process Time improve by 40min (4 hr. 28 min. -> 3 hr. 40 min.)
+
+**Next Improvement :**
+- avoid vector manipulation as much as possible, replace all vector by simple array object.
