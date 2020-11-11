@@ -23,7 +23,7 @@ The dataset I am using is based on this amazing open source project [SaveYourLif
 
 * [Run the Program](#run-the-program)
 
-* [Log](#Log)
+* [Improvement Log](#Improvement-Log)
 
 
 # The Process
@@ -69,7 +69,7 @@ Sample :        10_000 / dataset (20 000 images)
 Resolution :    102 x 102 pixel
 Type:           GrayScale
 PC Config : IMac 3.4 GHz i5 4Core / 16 Go DDR4 2400 MHz 
-Testing process time :  3 hr. 40 min. 11 sec. / dataset (total 7 hr. 20 min. 22 sec.)
+Testing process time :  34 min. 27 sec. / dataset (total 1 hr. 8 min.)
 ```
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
@@ -87,12 +87,12 @@ Sample :        10_000 / dataset (20 000 images)
 Resolution :    102 x 102 pixel
 Type:           Color (RGB)
 PC Config : IMac 3.4 GHz i5 4Core / 16 Go DDR4 2400 MHz 
-Testing process time :  10 hr. 22 min. / dataset (total 20 hr. 44 min.)
+Testing process time :  1 hr. 35 min. 30 sec. / dataset (total 3 hr. 11 min.)
 ```
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
 |:--------------:|:------:|:------:|:------:|
-| Chisquare      | 65.06% | 0% | 0% |
+| Chisquare      | 65.06% | 65.06% | 65.06% |
 
 # Conclusion
 
@@ -115,7 +115,7 @@ We can try also an other direction for neighboor discorvery (anticlockwise, ..) 
 │        ├── GRAY
 │        │     └── descriptor.txt   #Idem
 ├── documentation                   #Documentation (images)
-├── out                             #Binary result
+├── build                             #Binary result
 ├── results                         #Generate after predict cmd (log results)
 └── src                             #Source
     ├── formula.cpp                 #Contains distance formula
@@ -164,59 +164,52 @@ pkg-config opencv4 --cflags
 >> -I/usr/include/opencv4
 ```
 
-# Compile & Execute
-
-* Compilation Only
-```bash 
-make
-```
-# With Make
-
-* Compile & Execute Train
-```bash 
-make gt #for grayscale image
-<or>
-make ct #for color image
-```
-
-* Compile & Execute Predict
-```bash 
-make gp #for grayscale image
-<or>
-make cp #for color image
-```
-
-## With VsCode (DEBUG)
-
-Use the script for debugging train or predict *.vscode/launch.json*.
-The debug use make .
-
-## With Only the Executable
-
-After Compilation you can choose to run the script manualy like that :
-
-* Exemple: Execute Train for grayscale images
+## Compile 
 
 ```bash 
-./out/pbl_masked -t train -m gray ./datasets
+mkdir build
+cd build
+cmake .. && make
 ```
 
-* Execute Predict for grayscale images
+## Execute
+
+```bash
+FightAgainstCovid19/..
+Accept only three argument.
+    Arguments:
+        --type <train|predict> 
+            train the model by producing a descriptor or predict the training set with different distance formula
+        --mode <color|gray>
+            specify the nature of the images
+    Example :
+        FightAgainstCovid19 -t train -m gray <path_to_dataset>
+```
+
+* Exemple: train
 
 ```bash 
-./out/pbl_masked -t predict -m gray ./datasets
+./build/src/FightAgainstCovid19 -t train -m gray ../../datasets #for grayscale
+./build/src/FightAgainstCovid19 -t train -m color ../../datasets #for color
 ```
 
-# Log
+* Execute predict
 
-## 10/11/2020 
+```bash 
+./build/src/FightAgainstCovid19 -t predict -m gray ../../datasets #for grayscale
+./build/src/FightAgainstCovid19 -t predict -m color ../../datasets #for color
+```
+
+# Improvement Log
+
+## 09/11/2020 
 
 **Bug Fix :**
 - Neighboord discovery fails, result of an incomplete histogram.
 - Some uchar to int convertion fail.
 
 **Logic Change :**
-- Clockwise for Neighboord discovery.
+- Human reading direction to Clockwise for Neighboord discovery.
 
 **Performance Improvement :**
 - Mat variable type pass by reference in function.
@@ -226,3 +219,12 @@ vector object replace by simple array in some operation.
 
 **Next Improvement :**
 - avoid vector manipulation as much as possible, replace all vector by simple array object.
+
+## 10/11/2020 
+
+**Performance Improvement :**
+- Wrong usage of commande make. Replace by Cmake (with release build option enable).
+- Replace vector by simple array + array pointeur in all function.
+- Grayscale testing process from **3 hr. 40 min.** to **1 hr. 8 min.**
+- Color testing process from **10 hr. 22 min.** to **3 hr. 11 min**.
+
