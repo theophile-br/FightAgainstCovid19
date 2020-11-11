@@ -1,6 +1,8 @@
-out/*
-datasets/COLOR
-datasets/GRAY
-dataset/*
+out
+.vscode
+datasets
+build
+.idea
+cmake-build-debug
 .DS_Store
 results
