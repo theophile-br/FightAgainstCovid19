@@ -65,11 +65,11 @@ Contains **10_000 Color** and **10_000 GrayScale** images in **102 x 102 pixel**
 ## GRAYSCALE TESTING PROCESS
 
 ```
-Sample :        10_000 / dataset (20 000 images)
+Sample :        20 000 images (10_000 / dataset )
 Resolution :    102 x 102 pixel
 Type:           GrayScale
 PC Config : IMac 3.4 GHz i5 4Core / 16 Go DDR4 2400 MHz 
-Testing process time :  34 min. 27 sec. / dataset (total 1 hr. 8 min.)
+Testing process time :  1 hr. 8 min. (34 min. 27 sec. / dataset )
 ```
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
@@ -83,11 +83,11 @@ Testing process time :  34 min. 27 sec. / dataset (total 1 hr. 8 min.)
 ## COLOR TESTING PROCESS *in progress..*
 
 ```
-Sample :        10_000 / dataset (20 000 images)
+Sample :        20 000 images (10_000 / dataset)
 Resolution :    102 x 102 pixel
 Type:           Color (RGB)
 PC Config : IMac 3.4 GHz i5 4Core / 16 Go DDR4 2400 MHz 
-Testing process time :  1 hr. 35 min. 30 sec. / dataset (total 3 hr. 11 min.)
+Testing process time :  3 hr. 11 min. (1 hr. 35 min. 30 sec. / dataset)
 ```
 
 | Distance Formula | Sucess Rate TRAIN/TEST 1 | Sucess Rate TRAIN/TEST 2 | TRAIN/TEST 1 & 2 Average |
@@ -193,7 +193,7 @@ Accept only three argument.
 ./build/src/FightAgainstCovid19 -t train -m color ../../datasets #for color
 ```
 
-* Execute predict
+* Exemple: predict
 
 ```bash 
 ./build/src/FightAgainstCovid19 -t predict -m gray ../../datasets #for grayscale
