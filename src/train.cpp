@@ -24,24 +24,24 @@ void train(char *path_to_dataset, char *mode)
 	if (strcmp(mode, "gray") == 0)
 	{
 		// Train 1 - Correct(CMFD)
-		executeGrayTrain("datasets/GRAY/1TRAIN", "CMFD", 1, true);
+		executeGrayTrain(string(path_to_dataset) + "/GRAY/1TRAIN", "CMFD", 1, true);
 		// Train 1 - Incorrect(IMFD)
-		executeGrayTrain("datasets/GRAY/1TRAIN", "IMFD", 1, false);
+		executeGrayTrain(string(path_to_dataset) + "/GRAY/1TRAIN", "IMFD", 1, false);
 		// Train 2 - Correct(CMFD)
-		executeGrayTrain("datasets/GRAY/2TRAIN", "CMFD", 2, true);
+		executeGrayTrain(string(path_to_dataset) + "/GRAY/2TRAIN", "CMFD", 2, true);
 		// Train 2 - Incorrect(IMFD)
-		executeGrayTrain("datasets/GRAY/2TRAIN", "IMFD", 2, false);
+		executeGrayTrain(string(path_to_dataset) + "/GRAY/2TRAIN", "IMFD", 2, false);
 	}
 	else
 	{
 		// EXECUTE COLOR TRAIN
-		executeColorTrain("datasets/COLOR/1TRAIN", "CMFD", 1, true);
+		executeColorTrain(string(path_to_dataset) + "/COLOR/1TRAIN", "CMFD", 1, true);
 		// EXECUTE COLOR TRAIN
-		executeColorTrain("datasets/COLOR/1TRAIN", "IMFD", 1, false);
+		executeColorTrain(string(path_to_dataset) + "/COLOR/1TRAIN", "IMFD", 1, false);
 		// EXECUTE COLOR TRAIN
-		executeColorTrain("datasets/COLOR/2TRAIN", "CMFD", 2, true);
+		executeColorTrain(string(path_to_dataset) + "/COLOR/2TRAIN", "CMFD", 2, true);
 		// EXECUTE COLOR TRAIN
-		executeColorTrain("datasets/COLOR/2TRAIN", "IMFD", 2, false);
+		executeColorTrain(string(path_to_dataset) + "/COLOR/2TRAIN", "IMFD", 2, false);
 	}
 };
 
@@ -72,17 +72,15 @@ void executeColorTrain(std::string path, std::string maskedType, int trainNumber
 			 << "process: "
 			 << (float)count / 5000.f * 100 << "%";
 		Mat img = imread(p.path(), IMREAD_COLOR);
-		vector<vector<int>> pblHist;
-		pblHist.clear();
+		int pblHist[3][256] = {0};
 		data.str(string());
-		pblHist.clear();
-		pblHist = color2Hist(img);
-		for (int i = 0; i < pblHist.size(); i++)
+		color2Hist(img, pblHist);
+		for (int i = 0; i < 3; i++)
 		{
-			for (int j = 0; j < pblHist[i].size(); j++)
+			for (int j = 0; j < 256; j++)
 			{
 				data << pblHist[i][j];
-				if (!((i == pblHist.size() - 1) && (j == pblHist[i].size() - 1)))
+				if (!((i == 3 - 1) && (j == 256 - 1)))
 				{
 					data << ",";
 				}
@@ -132,19 +130,18 @@ void executeGrayTrain(std::string path, std::string maskedType, int trainNumber,
 			 << "process: "
 			 << (float)count / 5000.f * 100 << "%";
 		Mat img = imread(p.path(), IMREAD_GRAYSCALE);
-		vector<int> pblHist;
-		pblHist.empty();
+		int pblHist[256] = {0};
 		data.clear();
 		data.str(std::string());
-		pblHist = gray2Hist(img);
+		gray2Hist(img, pblHist);
 		// for(int i = 0; i < pblHist.size(); i++) {
 		// 	cout << pblHist[i] << " , ";
 		// }
 		// cout << endl;
-		for (int i = 0; i < pblHist.size(); i++)
+		for (int i = 0; i < 256; i++)
 		{
 			data << pblHist[i];
-			if (i != pblHist.size() - 1)
+			if (i != 256 - 1)
 			{
 				data << ",";
 			}

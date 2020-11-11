@@ -15,9 +15,8 @@ const string LBP::GRAY("GRAY");
 const string LBP::TRAIN("TRAIN");
 const string LBP::TEST("TEST");
 
-vector<int> gray2Hist(Mat &img){
-	vector<uchar> pblImg;
-	vector<int> pblHist(256, 0);
+void gray2Hist(Mat &img, int lbpHist[256]){
+	// vector<uchar> pblImg;
 	for (int y = 1; y < img.rows - 1; y++)
 	{
 		for (int x = 1; x < img.cols - 1; x++)
@@ -42,27 +41,23 @@ vector<int> gray2Hist(Mat &img){
 			}
 			// pblImg.push_back(decimalValue);
 			// cout << endl << (int)decimalValue << endl;
-			pblHist[decimalValue]++;
+			lbpHist[decimalValue] = lbpHist[decimalValue] + 1;
 		}
 	}
 	// Mat my_mat(img.rows - 2, img.cols - 2, CV_8UC1, pblImg.data());
 	// imshow("Display window", my_mat);
 	// waitKey(0);
-	return pblHist;
 }
 
-vector<vector<int>> color2Hist(cv::Mat &img){
+void color2Hist(cv::Mat &img, int lbpHist[3][256]){
 	Mat rbg[3];
 	split(img,rbg);
-	vector<vector<int>> pblHist(3);
-	pblHist[0] = gray2Hist(rbg[0]);
-	pblHist[1] = gray2Hist(rbg[1]);
-	pblHist[2] = gray2Hist(rbg[2]);
-	return pblHist;
+	gray2Hist(rbg[0], lbpHist[0]);
+	gray2Hist(rbg[1], lbpHist[1]);
+	gray2Hist(rbg[2], lbpHist[2]);
 }
 
-vector<vector<int>> colorDescriptor2Vector(string descriptor){
-	vector<vector<int>> v(3,vector<int>());
+void colorDescriptor2Vector(string descriptor, int v[3][256]){
 	descriptor = descriptorGetHistogramPart(descriptor);
 	string delimiter = ",";
 	size_t pos = 0;
@@ -70,35 +65,34 @@ vector<vector<int>> colorDescriptor2Vector(string descriptor){
 	for (int i = 0; i < 3; i++){
 		int count = 0;
 		while ((pos = descriptor.find(delimiter)) != std::string::npos) {
-			count++;
     		token = descriptor.substr(0, pos);
-			v[i].push_back(atoi( token.c_str() ));
-    		descriptor.erase(0, pos + delimiter.length());
+			v[i][count] = atoi( token.c_str() );
+            count++;
+            descriptor.erase(0, pos + delimiter.length());
 			if(count == 256){
 				break;
 			}
 		}
 	}
 	token = descriptor.substr(0, pos);
-	v[2].push_back(atoi( token.c_str() ));
+	v[2][255] = atoi( token.c_str() );
 	descriptor.erase(0, pos + delimiter.length());
-	return  v;
 }
 
-vector<int> grayDescriptor2Vector(string descriptor) {
-	vector<int> v;
+void grayDescriptor2Vector(string descriptor, int v[256]) {
     descriptor = descriptorGetHistogramPart(descriptor);
 	string delimiter = ",";
 	size_t pos = 0;
 	string token;
+	int i = 0;
 	while ((pos = descriptor.find(delimiter)) != std::string::npos) {
     	token = descriptor.substr(0, pos);
-		v.push_back(atoi( token.c_str() ));
+		v[i] = atoi( token.c_str() );
     	descriptor.erase(0, pos + delimiter.length());
+		i++;
 	}
 	token = descriptor.substr(0, pos);
-	v.push_back(atoi( token.c_str() ));
-	return  v;
+	v[255] = atoi( token.c_str() );
 }
 
 string descriptorGetType(string descriptor) {

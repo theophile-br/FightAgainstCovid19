@@ -16,11 +16,11 @@ class LBP {
     	static const std::string TEST;
 };
 
-std::vector<int> gray2Hist(cv::Mat &img);
-std::vector<std::vector<int>> color2Hist(cv::Mat &img);
+void gray2Hist(cv::Mat &img, int lbpHist[256]);
+void color2Hist(cv::Mat &img, int lbpHist[3][256]);
 std::string descriptorGetType(std::string descriptor);
-std::vector<int> grayDescriptor2Vector(std::string descriptor);
+void grayDescriptor2Vector(std::string descriptor, int v[256]);
 std::string descriptorGetHistogramPart(std::string descriptor);
-std::vector<std::vector<int>> colorDescriptor2Vector(std::string descriptor);
+void colorDescriptor2Vector(std::string descriptor, int v[3][256]);
 
 #endif

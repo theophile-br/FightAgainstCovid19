@@ -18,14 +18,14 @@ int main(int argc, char* argv[])
 void printUsage()
 {
     cout <<
-         "Accept only two argument.\n"
+         "Accept only three argument.\n"
          "Argument:\n"
          "  --type <train|predict>    -t\n"
          "      train the model by producing a descriptor or predict the training set with different distance formula\n"
          "  --mode <color|gray>         -m\n"
          "      specify the nature of the images\n"
          "Example :\n"
-         "pbl_masked -t train -m gray <path_to_dataset>\n"
+         "FightAgainstCovid19 -t train -m gray <path_to_dataset>\n"
          << endl;
 }
 
@@ -60,8 +60,8 @@ int parseCmdArgs(int argc, char** argv)
             i++;
         } else {
             path = argv[i];
-			if(!is_directory(path)) {
-				cout << path << " isn't a directory" << endl;
+			if(!is_directory( current_path().string() + "/" + path)) {
+				cout << current_path().string() + "/" + path << " isn't a directory" << endl;
 				printUsage();
 				return EXIT_FAILURE;
 			}

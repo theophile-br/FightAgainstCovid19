@@ -25,15 +25,14 @@ void predict(char* path_to_dataset, char* mode){
     } else {
         colorPredict(path_to_dataset);
     }
-};
+}
 
 void colorPredict(char* path_to_dataset){
     // ITERATE DATASET1 AND DATASET2
     for(int datasetNumber = 1; datasetNumber <= 2; datasetNumber++){
         time_t start = time(0);
         double success = 0;
-        string pathToTestingSet = "";
-        string pathToDescriptorFile = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
+        string pathToDescriptorFile = string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
         ifstream descriptorFile(pathToDescriptorFile);
         std::string line;
         if(!descriptorFile) {
@@ -50,16 +49,19 @@ void colorPredict(char* path_to_dataset){
             } else {
                 maskedType = LBP::IMFD;
             };
-            string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
+            string pathToTestingSet = string(path_to_dataset) + "/" + LBP::COLOR + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
             // ITERATE FOLDER
             for(auto& p: directory_iterator(pathToTestingSet)) {
                 string bestCandidatType = "";
                 double minError = 1.79769e+308;
                 Mat currentImg =  imread(p.path(), IMREAD_COLOR);
-                vector<vector<int>> testDescriptorVector = color2Hist(currentImg);
+                int testDescriptorVector[3][256] = {0};
+                color2Hist(currentImg, testDescriptorVector);
                 while (getline(descriptorFile, line)) {
-                    vector<vector<int>> trainDescriptorVector = colorDescriptor2Vector(line);
-                    result = chisquare(trainDescriptorVector, testDescriptorVector);
+                    int trainDescriptorVector[3][256] = {0};
+                    colorDescriptor2Vector(line, trainDescriptorVector);
+                    result = bhattacharyya(trainDescriptorVector, testDescriptorVector);
+                    //result = chisquare(trainDescriptorVector, testDescriptorVector);
                     if(minError > result ) {
                             minError = result;
                             bestCandidatType = descriptorGetType(line);
@@ -72,7 +74,8 @@ void colorPredict(char* path_to_dataset){
                 descriptorFile.clear();
                 descriptorFile.seekg(0, ios::beg);
                 cout <<  "DATASETS NUM "<< datasetNumber << " " << maskedType << " : " << numberOfImageProcess << " images processed >> " <<  numberOfImageProcess / 10000 * 100 << "%" << endl;
-                cout << "Chisquare " << " --- Predict : " <<  bestCandidatType << " --- MinError : " <<  minError <<  " --- Rate : " << success / numberOfImageProcess * 100 << " %" << endl;
+                // cout << "ChiSquare " << " --- Predict : " <<  bestCandidatType << " --- MinError : " <<  minError <<  " --- Rate : " << success / numberOfImageProcess * 100 << " %" << endl;
+                cout << "Bhattacharyya " << " --- Predict : " <<  bestCandidatType << " --- MinError : " <<  minError <<  " --- Rate : " << success / numberOfImageProcess * 100 << " %" << endl;
                 cout << "---" << endl;
             }
         }
@@ -109,9 +112,9 @@ void grayPredict(char* path_to_dataset){
         time_t start = time(0);
         vector<double> success(5, 0);
         string pathToTestingSet = "";
-        string pathToDescriptorFile = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
+        string pathToDescriptorFile = string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TRAIN + "/descriptor.txt";
         ifstream descriptorFile(pathToDescriptorFile);
-        std::string line;
+        string line;
         if(!descriptorFile) {
             cout << "Cant Open" << endl;
         }
@@ -126,16 +129,18 @@ void grayPredict(char* path_to_dataset){
             } else {
                 maskedType = LBP::IMFD;
             };
-            string pathToTestingSet = current_path().string() + "/" + string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
+            string pathToTestingSet = string(path_to_dataset) + "/" + LBP::GRAY + "/" + to_string(datasetNumber) + LBP::TEST + "/" + maskedType;
             // ITERATE FOLDER
             for(auto& p: directory_iterator(pathToTestingSet)) {
                 vector<string> bestCandidatType(5, "");
                 vector<double> minError(5, 1.79769e+308);
                 minError[4] = -1.0;
                 Mat currentImg =  imread(p.path(), IMREAD_GRAYSCALE);
-                vector<int> testDescriptorVector = gray2Hist(currentImg);
+                int testDescriptorVector[256] = {0};
+                gray2Hist(currentImg, testDescriptorVector);
                 while (getline(descriptorFile, line)) {
-                    vector<int> trainDescriptorVector = grayDescriptor2Vector(line);
+                    int trainDescriptorVector[256] = {0};
+                    grayDescriptor2Vector(line, trainDescriptorVector);
                     result[0] = sad(trainDescriptorVector, testDescriptorVector);
                     result[1] = intersect(trainDescriptorVector, testDescriptorVector);
                     result[2] = chisquare(trainDescriptorVector, testDescriptorVector);
